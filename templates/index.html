@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coupon Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Coupon Calculator</p>
+        <h1>Calculate your discount before you check out.</h1>
+        <p class="lede">Enter the original price, choose a coupon type, and see the savings instantly.</p>
+      </section>
+
+      <section class="card">
+        <form method="post" class="calculator-form">
+          <label>
+            <span>Original price</span>
+            <input type="number" name="original_price" min="0" step="0.01" placeholder="79.99" value="{{ form.original_price }}" required>
+          </label>
+
+          <label>
+            <span>Discount type</span>
+            <select name="discount_type">
+              <option value="percent" {% if form.discount_type == 'percent' %}selected{% endif %}>Percentage off</option>
+              <option value="fixed" {% if form.discount_type == 'fixed' %}selected{% endif %}>Fixed amount off</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Discount value</span>
+            <input type="number" name="discount_value" min="0" step="0.01" placeholder="15" value="{{ form.discount_value }}" required>
+          </label>
+
+          <button type="submit">Calculate savings</button>
+        </form>
+
+        {% if error %}
+          <p class="message error">{{ error }}</p>
+        {% endif %}
+
+        {% if result %}
+          <div class="results">
+            <div>
+              <span>Original price</span>
+              <strong>${{ result.original_price }}</strong>
+            </div>
+            <div>
+              <span>Discount amount</span>
+              <strong>${{ result.discount_amount }}</strong>
+            </div>
+            <div>
+              <span>Final price</span>
+              <strong>${{ result.final_price }}</strong>
+            </div>
+            <div>
+              <span>Effective savings</span>
+              <strong>{{ result.savings_percent }}%</strong>
+            </div>
+          </div>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>
