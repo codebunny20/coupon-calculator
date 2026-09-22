@@ -6,13 +6,33 @@
     <title>Coupon Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
-  <body>
+  <body data-theme="default">
     <main class="shell">
       <section class="hero">
-        <span class="badge">Easy savings</span>
+        <div class="hero-row">
+          <span class="badge">Easy savings</span>
+          <button type="button" class="settings-toggle" aria-expanded="false" aria-controls="settings-panel">
+            Settings
+          </button>
+        </div>
         <h1>See your discount before checkout.</h1>
         <p class="lede">Enter the price, choose the coupon type, and get the final total in seconds.</p>
       </section>
+
+      <aside class="settings-panel" id="settings-panel" aria-label="Settings panel">
+        <div class="settings-header">
+          <h3>Settings</h3>
+        </div>
+        <div class="setting-group">
+          <label class="setting-label">Theme</label>
+          <div class="theme-picker" aria-label="Theme switcher">
+            <button type="button" class="theme-btn active" data-theme="default" aria-label="Use default theme">Default</button>
+            <button type="button" class="theme-btn" data-theme="warm" aria-label="Use warm theme">Warm</button>
+            <button type="button" class="theme-btn" data-theme="dark" aria-label="Use dark mode theme">Dark</button>
+            <button type="button" class="theme-btn" data-theme="mint" aria-label="Use mint theme">Mint</button>
+          </div>
+        </div>
+      </aside>
 
       <section class="card">
         <div class="card-layout">
@@ -84,5 +104,67 @@
         </div>
       </section>
     </main>
+
+    <script>
+      const STORAGE_KEY = 'coupon-settings';
+      const body = document.body;
+      const buttons = document.querySelectorAll('.theme-btn');
+      const settingsPanel = document.getElementById('settings-panel');
+      const settingsToggle = document.querySelector('.settings-toggle');
+
+      function loadSettings() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+          return {
+            theme: saved.theme || 'default',
+            settingsOpen: !!saved.settingsOpen,
+          };
+        } catch (error) {
+          return {
+            theme: 'default',
+            settingsOpen: false,
+          };
+        }
+      }
+
+      function saveSettings(nextSettings) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextSettings));
+      }
+
+      function applyTheme(theme) {
+        body.setAttribute('data-theme', theme);
+        buttons.forEach((button) => {
+          const isActive = button.dataset.theme === theme;
+          button.classList.toggle('active', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function toggleSettings(forceOpen) {
+        const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !settingsPanel.classList.contains('open');
+        settingsPanel.classList.toggle('open', shouldOpen);
+        settingsToggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+
+        const settings = loadSettings();
+        settings.settingsOpen = shouldOpen;
+        saveSettings(settings);
+      }
+
+      settingsToggle.addEventListener('click', () => toggleSettings());
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const selectedTheme = button.dataset.theme;
+          const settings = loadSettings();
+          settings.theme = selectedTheme;
+          saveSettings(settings);
+          applyTheme(selectedTheme);
+        });
+      });
+
+      const settings = loadSettings();
+      applyTheme(settings.theme);
+      toggleSettings(settings.settingsOpen);
+    </script>
   </body>
 </html>

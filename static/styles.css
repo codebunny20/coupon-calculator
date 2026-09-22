@@ -11,6 +11,54 @@
   --shadow: 0 24px 60px rgba(31, 26, 23, 0.12);
 }
 
+body[data-theme="default"] {
+  --bg: #f4efe6;
+  --panel: #fffaf2;
+  --panel-strong: #fff3dd;
+  --text: #1f1a17;
+  --muted: #6a5e55;
+  --accent: #0f766e;
+  --accent-dark: #115e59;
+  --border: rgba(31, 26, 23, 0.12);
+  --shadow: 0 24px 60px rgba(31, 26, 23, 0.12);
+}
+
+body[data-theme="warm"] {
+  --bg: #fdf3ea;
+  --panel: #fffaf6;
+  --panel-strong: #fde9d7;
+  --text: #36251a;
+  --muted: #6d4f3d;
+  --accent: #c76a2c;
+  --accent-dark: #9d4f22;
+  --border: rgba(54, 37, 26, 0.12);
+  --shadow: 0 24px 60px rgba(82, 54, 32, 0.12);
+}
+
+body[data-theme="dark"] {
+  --bg: #12181f;
+  --panel: #1b2430;
+  --panel-strong: #202d3d;
+  --text: #edf3ff;
+  --muted: #b1bfd6;
+  --accent: #7aa2ff;
+  --accent-dark: #5b87f3;
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+body[data-theme="mint"] {
+  --bg: #edfaf7;
+  --panel: #f8fffe;
+  --panel-strong: #dffaf4;
+  --text: #153b36;
+  --muted: #4d726d;
+  --accent: #138a72;
+  --accent-dark: #0d6d5d;
+  --border: rgba(21, 59, 54, 0.12);
+  --shadow: 0 24px 60px rgba(19, 83, 72, 0.12);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -23,7 +71,8 @@ body {
   background:
     radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 34%),
     radial-gradient(circle at bottom right, rgba(194, 65, 12, 0.14), transparent 30%),
-    linear-gradient(180deg, #fbf6ee 0%, var(--bg) 100%);
+    linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 .shell {
@@ -35,6 +84,98 @@ body {
 .hero {
   max-width: 700px;
   margin-bottom: 1.5rem;
+}
+
+.hero-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.settings-toggle {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body[data-theme="dark"] .settings-toggle,
+body[data-theme="dark"] .theme-btn,
+body[data-theme="dark"] .settings-panel,
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .calculator-panel,
+body[data-theme="dark"] .summary-panel,
+body[data-theme="dark"] .summary-total,
+body[data-theme="dark"] .result-box,
+body[data-theme="dark"] .empty-state,
+body[data-theme="dark"] input,
+body[data-theme="dark"] select {
+  background: rgba(20, 29, 38, 0.94);
+  color: var(--text);
+}
+
+.settings-panel {
+  width: min(100%, 420px);
+  margin: 0 0 1.5rem auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 250, 242, 0.7);
+  box-shadow: var(--shadow);
+  display: none;
+}
+
+.settings-panel.open {
+  display: block;
+}
+
+.settings-header h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.1rem;
+}
+
+.setting-group {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.setting-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.theme-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.theme-btn {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18);
 }
 
 .eyebrow {
@@ -143,6 +284,13 @@ select {
   color: var(--text);
 }
 
+body[data-theme="dark"] input,
+body[data-theme="dark"] select {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #111b27;
+  color: #edf3ff;
+}
+
 button {
   align-self: end;
   padding: 0.95rem 1.2rem;
@@ -187,6 +335,15 @@ button:hover {
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.6);
   border: 1px solid rgba(17, 94, 89, 0.12);
+}
+
+body[data-theme="dark"] .summary-panel,
+body[data-theme="dark"] .summary-total,
+body[data-theme="dark"] .result-box,
+body[data-theme="dark"] .empty-state {
+  background: rgba(19, 29, 39, 0.96);
+  border-color: rgba(255, 255, 255, 0.09);
+  color: var(--text);
 }
 
 .summary-total strong {
@@ -236,6 +393,19 @@ button:hover {
 }
 
 @media (max-width: 780px) {
+  .hero-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .theme-picker {
+    justify-content: flex-start;
+  }
+
+  .settings-panel {
+    width: 100%;
+  }
+
   .card-layout,
   .split-fields,
   .results {
