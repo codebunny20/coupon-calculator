@@ -45,6 +45,35 @@
             </div>
 
             <form method="post" class="calculator-form">
+              <div class="split-fields">
+                <label>
+                  <span>Preset price</span>
+                  <select id="preset-price">
+                    <option value="">Choose a common price</option>
+                    <option value="9.99">$9.99</option>
+                    <option value="19.99">$19.99</option>
+                    <option value="29.99">$29.99</option>
+                    <option value="49.99">$49.99</option>
+                    <option value="79.99">$79.99</option>
+                    <option value="99.99">$99.99</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span>Preset deal</span>
+                  <select id="preset-deal">
+                    <option value="">Choose a common deal</option>
+                    <option value="percent:10">10% off</option>
+                    <option value="percent:15">15% off</option>
+                    <option value="percent:20">20% off</option>
+                    <option value="percent:25">25% off</option>
+                    <option value="fixed:5">$5 off</option>
+                    <option value="fixed:10">$10 off</option>
+                    <option value="fixed:20">$20 off</option>
+                  </select>
+                </label>
+              </div>
+
               <label>
                 <span>Original price</span>
                 <input type="number" name="original_price" min="0" step="0.01" placeholder="79.99" value="{{ form.original_price }}" required>
@@ -111,6 +140,11 @@
       const buttons = document.querySelectorAll('.theme-btn');
       const settingsPanel = document.getElementById('settings-panel');
       const settingsToggle = document.querySelector('.settings-toggle');
+      const priceInput = document.querySelector('input[name="original_price"]');
+      const discountTypeSelect = document.querySelector('select[name="discount_type"]');
+      const discountValueInput = document.querySelector('input[name="discount_value"]');
+      const presetPriceSelect = document.getElementById('preset-price');
+      const presetDealSelect = document.getElementById('preset-deal');
 
       function loadSettings() {
         try {
@@ -161,6 +195,31 @@
           applyTheme(selectedTheme);
         });
       });
+
+      if (presetPriceSelect && priceInput) {
+        presetPriceSelect.addEventListener('change', (event) => {
+          const selectedPrice = event.target.value;
+          if (!selectedPrice) {
+            return;
+          }
+          priceInput.value = selectedPrice;
+        });
+      }
+
+      if (presetDealSelect && discountTypeSelect && discountValueInput) {
+        presetDealSelect.addEventListener('change', (event) => {
+          const selectedDeal = event.target.value;
+          if (!selectedDeal || !selectedDeal.includes(':')) {
+            return;
+          }
+
+          const [dealType, dealValue] = selectedDeal.split(':');
+          if (dealType && dealValue) {
+            discountTypeSelect.value = dealType;
+            discountValueInput.value = dealValue;
+          }
+        });
+      }
 
       const settings = loadSettings();
       applyTheme(settings.theme);
