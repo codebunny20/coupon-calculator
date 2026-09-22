@@ -2,21 +2,21 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from flask import Flask, render_template, request
 
-
+# Initialize the Flask application
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
-
+# Helper function to parse a string into a Decimal number
 def parse_decimal(value):
     try:
         return Decimal(value)
     except (InvalidOperation, TypeError, ValueError):
         return None
 
-
+# Helper function to format a Decimal number as money
 def money(value):
     return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-
+# Route for the main page of the application
 @app.route("/", methods=["GET", "POST"])
 def index():
     defaults = {
@@ -27,6 +27,7 @@ def index():
     result = None
     error = None
 
+    # Initialize the form with default values
     if request.method == "POST":
         form = {
             "original_price": request.form.get("original_price", "").strip(),
@@ -38,7 +39,7 @@ def index():
 
         original_price = parse_decimal(form["original_price"])
         discount_value = parse_decimal(form["discount_value"])
-
+# Validate the input values 
         if original_price is None or discount_value is None:
             error = "Enter valid numbers for price and discount."
         elif original_price < 0 or discount_value < 0:
@@ -53,18 +54,19 @@ def index():
 
             discount_amount = min(discount_amount, original_price)
             final_price = original_price - discount_amount
-
+# Calculate the final price and prepare the result dictionary
             result = {
                 "original_price": money(original_price),
                 "discount_amount": money(discount_amount),
+                "money_taken_off": money(discount_amount),
                 "final_price": money(final_price),
                 "savings_percent": money((discount_amount / original_price * Decimal("100")) if original_price else Decimal("0")),
                 "discount_label": "Percentage" if form["discount_type"] == "percent" else "Fixed amount",
             }
-
+# Render the template with the form, result, and error messages
     return render_template("index.html", form=defaults, result=result, error=error)
 
-
+# Run the application
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
 
