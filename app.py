@@ -54,13 +54,19 @@ def index():
 
             discount_amount = min(discount_amount, original_price)
             final_price = original_price - discount_amount
+            discount_percent = (discount_amount / original_price * Decimal("100")) if original_price else Decimal("0")
+            final_percent = Decimal("100") - discount_percent if original_price else Decimal("0")
 # Calculate the final price and prepare the result dictionary
             result = {
                 "original_price": money(original_price),
                 "discount_amount": money(discount_amount),
                 "money_taken_off": money(discount_amount),
                 "final_price": money(final_price),
-                "savings_percent": money((discount_amount / original_price * Decimal("100")) if original_price else Decimal("0")),
+                "savings_percent": money(discount_percent),
+                "discount_percent": money(discount_percent),
+                "final_percent": money(final_percent),
+                "requested_discount": money(discount_value),
+                "input_discount_value": money(discount_value),
                 "discount_label": "Percentage" if form["discount_type"] == "percent" else "Fixed amount",
             }
 # Render the template with the form, result, and error messages

@@ -124,6 +124,35 @@
                   <strong>{{ result.savings_percent }}%</strong>
                 </div>
               </div>
+
+              <div class="math-breakdown" aria-label="Math breakdown">
+                <p class="math-title">How this was calculated</p>
+                {% if form.discount_type == 'percent' %}
+                  <p class="math-step">1) Discount amount = ${{ result.original_price }} × {{ result.input_discount_value }}% = ${{ result.discount_amount }}</p>
+                {% else %}
+                  <p class="math-step">1) Discount amount = min(${{ result.input_discount_value }}, ${{ result.original_price }}) = ${{ result.discount_amount }}</p>
+                {% endif %}
+                <p class="math-step">2) Final price = ${{ result.original_price }} − ${{ result.discount_amount }} = ${{ result.final_price }}</p>
+              </div>
+
+              <div class="math-visual" aria-label="Visual price split">
+                <div class="visual-labels">
+                  <span>Original ${{ result.original_price }}</span>
+                  <span>100%</span>
+                </div>
+                <div class="bar-track" role="img" aria-label="Price split bar showing discount and final price portions">
+                  <div class="bar-discount" style="width: {{ result.discount_percent }}%">
+                    <span>Discount {{ result.discount_percent }}%</span>
+                  </div>
+                  <div class="bar-final" style="width: {{ result.final_percent }}%">
+                    <span>Final {{ result.final_percent }}%</span>
+                  </div>
+                </div>
+                <div class="visual-values">
+                  <span>Saved: ${{ result.discount_amount }}</span>
+                  <span>You pay: ${{ result.final_price }}</span>
+                </div>
+              </div>
             {% else %}
               <div class="empty-state">
                 <p>Your total will appear here.</p>
@@ -136,10 +165,12 @@
 
     <script>
       const STORAGE_KEY = 'coupon-settings';
+      const SCROLL_KEY = 'coupon-scroll-position';
       const body = document.body;
       const buttons = document.querySelectorAll('.theme-btn');
       const settingsPanel = document.getElementById('settings-panel');
       const settingsToggle = document.querySelector('.settings-toggle');
+      const calculatorForm = document.querySelector('.calculator-form');
       const priceInput = document.querySelector('input[name="original_price"]');
       const discountTypeSelect = document.querySelector('select[name="discount_type"]');
       const discountValueInput = document.querySelector('input[name="discount_value"]');
@@ -219,6 +250,23 @@
             discountValueInput.value = dealValue;
           }
         });
+      }
+
+      if (calculatorForm) {
+        calculatorForm.addEventListener('submit', () => {
+          sessionStorage.setItem(SCROLL_KEY, String(window.scrollY || window.pageYOffset || 0));
+        });
+      }
+
+      const savedScroll = sessionStorage.getItem(SCROLL_KEY);
+      if (savedScroll !== null) {
+        const scrollY = Number.parseFloat(savedScroll);
+        if (Number.isFinite(scrollY)) {
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollY);
+          });
+        }
+        sessionStorage.removeItem(SCROLL_KEY);
       }
 
       const settings = loadSettings();

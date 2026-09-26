@@ -346,6 +346,12 @@ body[data-theme="dark"] .empty-state {
   color: var(--text);
 }
 
+body[data-theme="dark"] .math-breakdown,
+body[data-theme="dark"] .math-visual {
+  background: rgba(19, 29, 39, 0.96);
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
 .summary-total strong {
   display: block;
   margin-top: 0.4rem;
@@ -375,6 +381,96 @@ body[data-theme="dark"] .empty-state {
 
 .full-width {
   grid-column: 1 / -1;
+}
+
+.math-breakdown {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 94, 89, 0.14);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.math-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.math-step {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.math-step + .math-step {
+  margin-top: 0.45rem;
+}
+
+.math-visual {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 94, 89, 0.14);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.visual-labels,
+.visual-values {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.visual-values {
+  margin-top: 0.6rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.bar-track {
+  margin-top: 0.55rem;
+  display: flex;
+  width: 100%;
+  min-height: 34px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(17, 94, 89, 0.2);
+  background: rgba(17, 94, 89, 0.12);
+}
+
+.bar-discount,
+.bar-final {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.35rem;
+  min-width: 0;
+}
+
+.bar-discount {
+  background: linear-gradient(135deg, #c2410c, #ea580c);
+  color: #fff;
+}
+
+.bar-final {
+  background: linear-gradient(135deg, var(--accent), #1d4ed8);
+  color: #fff;
+}
+
+.bar-discount span,
+.bar-final span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .empty-state {
