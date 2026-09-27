@@ -1,6 +1,13 @@
 # Coupon Calculator
 
-A lightweight Flask web app that helps users estimate the discount amount and final price before checkout.
+A lightweight Flask web app that helps users estimate the discount amount and final price before checkout. this is a link that will bring you directly to the live app:
+
+[Open Coupon Calculator](https://coupon-calculator.up.railway.app)
+
+
+## Why
+
+This app was created to simplify the process of calculating discounts and final prices, ensuring accuracy and saving time during shopping. i am always pushing to become a carrer coder and engineer. i also finally got a job as a cashier and i have discalcula so i made this tool for work so i can get the most accurate calculations, which helps me help the older shoppers who dont understand technology well.
 
 ## Overview
 
@@ -29,11 +36,11 @@ The app is designed to handle common checkout calculations with clear validation
 - `requirements.txt` — Python dependencies
 
 
-## where to find the app
+## Where to find the app
 
 The app's source code is located in this repository. The main application logic is in `app.py`, the HTML template is in `templates/index.html`, and the CSS styling is in `static/styles.css`.
 
-and this is a limk to that will bring you directly to the live app:
+and this is a link that will bring you directly to the live app:
 
 [Open Coupon Calculator](https://coupon-calculator.up.railway.app)
 

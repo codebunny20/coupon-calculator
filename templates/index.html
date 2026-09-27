@@ -141,10 +141,10 @@
                   <span>100%</span>
                 </div>
                 <div class="bar-track" role="img" aria-label="Price split bar showing discount and final price portions">
-                  <div class="bar-discount" style="width: {{ result.discount_percent }}%">
+                  <div class="bar-discount" data-percent="{{ result.discount_percent }}">
                     <span>Discount {{ result.discount_percent }}%</span>
                   </div>
-                  <div class="bar-final" style="width: {{ result.final_percent }}%">
+                  <div class="bar-final" data-percent="{{ result.final_percent }}">
                     <span>Final {{ result.final_percent }}%</span>
                   </div>
                 </div>
@@ -268,6 +268,13 @@
         }
         sessionStorage.removeItem(SCROLL_KEY);
       }
+
+      document.querySelectorAll('.bar-discount, .bar-final').forEach((bar) => {
+        const percent = Number.parseFloat(bar.dataset.percent || '0');
+        if (Number.isFinite(percent)) {
+          bar.style.width = `${percent}%`;
+        }
+      });
 
       const settings = loadSettings();
       applyTheme(settings.theme);

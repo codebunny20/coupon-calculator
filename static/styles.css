@@ -68,11 +68,26 @@ body {
   min-height: 100vh;
   font-family: Georgia, "Times New Roman", serif;
   color: var(--text);
+  line-height: 1.5;
   background:
     radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 34%),
     radial-gradient(circle at bottom right, rgba(194, 65, 12, 0.14), transparent 30%),
     linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
   transition: background 0.25s ease, color 0.25s ease;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.12);
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  color: var(--accent-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .shell {
@@ -96,13 +111,21 @@ body {
 
 .settings-toggle {
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.7);
   color: var(--text);
   border-radius: 999px;
   padding: 0.55rem 0.9rem;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.settings-toggle:hover,
+.settings-toggle:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(15, 118, 110, 0.28);
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.08);
 }
 
 body[data-theme="dark"] .settings-toggle,
@@ -207,6 +230,7 @@ h1 {
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   box-shadow: var(--shadow);
+  border-top: 4px solid rgba(15, 118, 110, 0.28);
 }
 
 .card-layout {
@@ -282,6 +306,14 @@ select {
   border: 1px solid var(--border);
   background: white;
   color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(15, 118, 110, 0.5);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.08);
 }
 
 body[data-theme="dark"] input,
@@ -299,10 +331,15 @@ button {
   color: white;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  box-shadow: 0 10px 20px rgba(15, 118, 110, 0.18);
 }
 
-button:hover {
-  background: linear-gradient(135deg, var(--accent-dark), #1e40af);
+button:hover,
+button:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 14px 28px rgba(15, 118, 110, 0.22);
 }
 
 .message {
@@ -357,6 +394,7 @@ body[data-theme="dark"] .math-visual {
   margin-top: 0.4rem;
   font-size: clamp(2rem, 4vw, 2.7rem);
   line-height: 1;
+  letter-spacing: -0.04em;
 }
 
 .results {
@@ -377,6 +415,7 @@ body[data-theme="dark"] .math-visual {
   display: block;
   margin-top: 0.35rem;
   font-size: 1.2rem;
+  letter-spacing: -0.02em;
 }
 
 .full-width {
@@ -389,6 +428,7 @@ body[data-theme="dark"] .math-visual {
   border-radius: 16px;
   border: 1px solid rgba(17, 94, 89, 0.14);
   background: rgba(255, 255, 255, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .math-title {
@@ -417,6 +457,7 @@ body[data-theme="dark"] .math-visual {
   border-radius: 16px;
   border: 1px solid rgba(17, 94, 89, 0.14);
   background: rgba(255, 255, 255, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .visual-labels,
@@ -450,8 +491,10 @@ body[data-theme="dark"] .math-visual {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 0;
   padding: 0.2rem 0.35rem;
   min-width: 0;
+  transition: width 0.2s ease;
 }
 
 .bar-discount {
