@@ -1,0 +1,67 @@
+{
+  "history": [
+    {
+      "timestamp": "2026-09-30T10:45:43.898677+00:00",
+      "discount_type": "percent",
+      "original_price": "100.00",
+      "discount_value": "20.00",
+      "discount_amount": "20.00",
+      "final_price": "80.00",
+      "equation": "$100.00 - 20.00% ($20.00) = $80.00"
+    },
+    {
+      "timestamp": "2026-09-30T10:52:44.742421+00:00",
+      "discount_type": "percent",
+      "original_price": "122.00",
+      "discount_value": "20.00",
+      "discount_amount": "24.40",
+      "final_price": "97.60",
+      "equation": "$122.00 - 20.00% ($24.40) = $97.60"
+    },
+    {
+      "timestamp": "2026-09-30T10:52:56.119607+00:00",
+      "discount_type": "percent",
+      "original_price": "1.22",
+      "discount_value": "20.00",
+      "discount_amount": "0.24",
+      "final_price": "0.98",
+      "equation": "$1.22 - 20.00% ($0.24) = $0.98"
+    },
+    {
+      "timestamp": "2026-09-30T10:53:21.758397+00:00",
+      "discount_type": "fixed",
+      "original_price": "1.22",
+      "discount_value": "20.00",
+      "discount_amount": "1.22",
+      "final_price": "0.00",
+      "equation": "$1.22 - $20.00 = $0.00"
+    },
+    {
+      "timestamp": "2026-09-30T10:53:36.525468+00:00",
+      "discount_type": "fixed",
+      "original_price": "122.00",
+      "discount_value": "20.00",
+      "discount_amount": "20.00",
+      "final_price": "102.00",
+      "equation": "$122.00 - $20.00 = $102.00"
+    },
+    {
+      "timestamp": "2026-09-30T10:54:04.166995+00:00",
+      "discount_type": "fixed",
+      "original_price": "122.00",
+      "discount_value": "10.00",
+      "discount_amount": "10.00",
+      "final_price": "112.00",
+      "equation": "$122.00 - $10.00 = $112.00"
+    },
+    {
+      "timestamp": "2026-09-30T10:54:22.329530+00:00",
+      "discount_type": "percent",
+      "original_price": "122.00",
+      "discount_value": "10.00",
+      "discount_amount": "12.20",
+      "final_price": "109.80",
+      "equation": "$122.00 - 10.00% ($12.20) = $109.80"
+    }
+  ]
+}
