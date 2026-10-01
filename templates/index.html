@@ -129,6 +129,7 @@
       const historyError = document.getElementById('history-error');
       const themeToggle = document.getElementById('theme-toggle');
       const themeLabel = document.getElementById('theme-label');
+      const originalPriceInput = document.querySelector('input[name="original_price"]');
       const discountValue = document.getElementById('discount-value');
       const quickButtons = document.querySelectorAll('.quick-btn');
       const discountAmountOutput = document.getElementById('discount-amount');
@@ -136,6 +137,7 @@
       const errorOutput = document.getElementById('calc-error');
 
       const themeStorageKey = 'coupon-calculator:theme';
+      let previewDebounceId;
 
       function openSettingsModal() {
         if (!settingsModal) return;
@@ -351,36 +353,64 @@
         });
       });
 
+      function hasCompleteInputs() {
+        if (!originalPriceInput || !discountValue) return false;
+        return originalPriceInput.value.trim() !== '' && discountValue.value.trim() !== '';
+      }
+
+      async function requestCalculation(endpoint) {
+        if (!calculatorForm) return;
+
+        const formData = new FormData(calculatorForm);
+
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            body: formData,
+          });
+          const data = await response.json();
+
+          if (data.ok) {
+            if (discountAmountOutput) discountAmountOutput.textContent = data.discount_amount;
+            if (finalPriceOutput) finalPriceOutput.textContent = data.final_price;
+            if (errorOutput) {
+              errorOutput.textContent = '';
+              errorOutput.hidden = true;
+            }
+          } else if (errorOutput) {
+            errorOutput.textContent = data.error || 'Could not calculate right now.';
+            errorOutput.hidden = false;
+          }
+        } catch (error) {
+          if (errorOutput) {
+            errorOutput.textContent = 'Could not calculate right now.';
+            errorOutput.hidden = false;
+          }
+        }
+      }
+
+      function queueLivePreview() {
+        if (!hasCompleteInputs()) {
+          if (errorOutput) {
+            errorOutput.textContent = '';
+            errorOutput.hidden = true;
+          }
+          return;
+        }
+
+        window.clearTimeout(previewDebounceId);
+        previewDebounceId = window.setTimeout(() => {
+          requestCalculation('/preview');
+        }, 150);
+      }
+
       if (calculatorForm) {
+        calculatorForm.addEventListener('input', queueLivePreview);
+        calculatorForm.addEventListener('change', queueLivePreview);
+
         calculatorForm.addEventListener('submit', async (event) => {
           event.preventDefault();
-
-          const formData = new FormData(calculatorForm);
-
-          try {
-            const response = await fetch('/calculate', {
-              method: 'POST',
-              body: formData,
-            });
-            const data = await response.json();
-
-            if (data.ok) {
-              if (discountAmountOutput) discountAmountOutput.textContent = data.discount_amount;
-              if (finalPriceOutput) finalPriceOutput.textContent = data.final_price;
-              if (errorOutput) {
-                errorOutput.textContent = '';
-                errorOutput.hidden = true;
-              }
-            } else if (errorOutput) {
-              errorOutput.textContent = data.error || 'Could not calculate right now.';
-              errorOutput.hidden = false;
-            }
-          } catch (error) {
-            if (errorOutput) {
-              errorOutput.textContent = 'Could not calculate right now.';
-              errorOutput.hidden = false;
-            }
-          }
+          await requestCalculation('/calculate');
         });
 
         calculatorForm.addEventListener('reset', () => {

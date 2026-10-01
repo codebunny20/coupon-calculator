@@ -62,6 +62,15 @@
       "discount_amount": "12.20",
       "final_price": "109.80",
       "equation": "$122.00 - 10.00% ($12.20) = $109.80"
+    },
+    {
+      "timestamp": "2026-10-01T08:19:46.978498+00:00",
+      "discount_type": "percent",
+      "original_price": "46.00",
+      "discount_value": "5.00",
+      "discount_amount": "2.30",
+      "final_price": "43.70",
+      "equation": "$46.00 - 5.00% ($2.30) = $43.70"
     }
   ]
 }

@@ -169,6 +169,30 @@ def calculate():
     )
 
 
+@app.route("/preview", methods=["POST"])
+def preview():
+    form = {
+        "original_price": request.form.get("original_price", "").strip(),
+        "discount_type": request.form.get("discount_type", "percent"),
+        "discount_value": request.form.get("discount_value", "").strip(),
+    }
+    result, error = calculate_discount(form)
+
+    if error:
+        return jsonify({"ok": False, "error": error}), 400
+
+    if result is None:
+        return jsonify({"ok": False, "error": "Calculation failed."}), 500
+
+    return jsonify(
+        {
+            "ok": True,
+            "discount_amount": f"${result['discount_amount']}",
+            "final_price": f"${result['final_price']}",
+        }
+    )
+
+
 @app.route("/history", methods=["GET"])
 def history():
     entries = load_history_entries()
