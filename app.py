@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_file
 
 # Initialize the Flask application
 app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -400,6 +400,11 @@ def multibuy_calculate():
             "effective_unit_price": f"${result['effective_unit_price']}",
         }
     )
+
+
+@app.route("/logic.js")
+def serve_logic_js():
+    return send_file("logic.js", mimetype="application/javascript")
 
 
 @app.route("/history", methods=["GET"])

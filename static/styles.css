@@ -1,3 +1,10 @@
+/* Global CSS Variables and Styles */
+/*
+  HTML correlation guide:
+  - The page shell, app card, and all sections are styled from the markup in templates/index.html.
+  - The root variables feed the overall theme used by the body, cards, inputs, buttons, and modal surfaces.
+  - The main layout is built from .page-shell > .app-card, while the main calculator form sits inside the card.
+*/
 :root {
   --bg-start: #f3f6ff;
   --bg-end: #eef2ff;
@@ -20,7 +27,7 @@
   --error-border: #fecdd3;
   --shadow: 0 30px 60px rgba(59, 76, 133, 0.14);
 }
-
+/* Dark Theme Variables */
 :root[data-theme="dark"] {
   --bg-start: #0d1526;
   --bg-end: #121b2d;
@@ -43,7 +50,7 @@
   --error-border: #7d3844;
   --shadow: 0 28px 55px rgba(2, 6, 23, 0.52);
 }
-
+/* Global Element Styles */
 * {
   box-sizing: border-box;
 }
@@ -51,7 +58,7 @@
 html {
   scroll-behavior: smooth;
 }
-
+/* Body Styles */
 body {
   margin: 0;
   min-height: 100vh;
@@ -65,18 +72,18 @@ body {
   color: var(--text);
   transition: background 0.2s ease, color 0.2s ease;
 }
-
+/* Button and Input Styles */
 button,
 input,
 select {
   font: inherit;
 }
-
+/* Page Shell Styles */
 .page-shell {
   width: min(960px, calc(100% - 24px));
   padding: 26px 0 32px;
 }
-
+/* App Card Styles */
 .app-card {
   padding: 22px;
   border-radius: 32px;
@@ -94,12 +101,28 @@ select {
 .toggle-row,
 .summary-row,
 .history-item {
+  /*
+    Layout helpers shared by the header, summary rows, settings rows, and history items.
+    These classes correspond to the repeated flex-based sections in the HTML:
+    - .brand-bar = top brand header area
+    - .app-header = hero title + quick totals block
+    - .summary-row = each row inside the discount summary
+    - .history-item = each saved calculation row in the history modal
+  */
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .brand-bar {
+  /*
+    Matches the top bar in the HTML:
+    <div class="brand-bar">
+      <div class="brand-copy">...</div>
+      <div class="header-actions">...</div>
+    </div>
+    This creates the brand area and the settings button alignment.
+  */
   gap: 12px;
   margin-bottom: 18px;
   padding-bottom: 16px;
@@ -191,12 +214,22 @@ h1 {
   letter-spacing: -0.05em;
 }
 
+/* Header Actions Styles */
 .header-actions {
+  /*
+    This is the right-side action cluster in the header, usually containing the settings button.
+    It corresponds to the .header-actions wrapper in the HTML next to the brand name.
+  */
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
 }
-
+/* Calculator and Multibuy Form Styles  these are used for the main calculation forms */
+/*
+  These styles target the two forms in the HTML:
+  - .calculator-form = the primary discount calculator form
+  - .multibuy-form = the multibuy deal calculator form inside the details section
+*/
 .settings-button {
   display: inline-flex;
   align-items: center;
@@ -249,7 +282,7 @@ h1 {
   color: var(--muted);
   letter-spacing: 0.02em;
 }
-
+/* Field Input and Deal Select Styles */
 .field input,
 .deal-select {
   width: 100%;
@@ -261,7 +294,7 @@ h1 {
   font-size: 1.02rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
-
+/* Type Toggle Styles */
 .field input:focus,
 .deal-select:focus,
 input[type="range"]:focus-visible {
@@ -271,6 +304,13 @@ input[type="range"]:focus-visible {
 }
 
 .type-toggle {
+  /*
+    This styles the discount type selector in the HTML:
+    <div class="type-toggle" role="group" aria-label="Discount type">
+      <label class="type-pill">...</label>
+    </div>
+    Each radio option is displayed as a pill toggle.
+  */
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -309,6 +349,14 @@ input[type="range"]:focus-visible {
   box-shadow: 0 12px 20px rgba(79, 110, 247, 0.24);
 }
 
+/* Quick Steps Styles */
+/*
+  These quick buttons correspond to the HTML block:
+  <div class="quick-steps" aria-label="Quick adjustment buttons">
+    <button class="quick-btn" data-step="...">...</button>
+  </div>
+  They give the user fast +/- changes to the discount percentage.
+*/
 .quick-steps {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -332,6 +380,15 @@ input[type="range"]:focus-visible {
   box-shadow: 0 8px 18px rgba(79, 110, 247, 0.12);
 }
 
+/* Summary Section Styles */
+/*
+  This block styles the live summary area in the HTML:
+  <div class="summary" aria-live="polite">
+    <div class="summary-row"> ... </div>
+    <div class="summary-row highlight"> ... </div>
+  </div>
+  It controls the discount and final price output shown under the calculator.
+*/
 .summary {
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -369,6 +426,7 @@ input[type="range"]:focus-visible {
   color: #fff;
 }
 
+/* Message Styles */
 .message {
   margin: 0;
   padding: 0.9rem 1rem;
@@ -382,6 +440,7 @@ input[type="range"]:focus-visible {
   border: 1px solid var(--error-border);
 }
 
+/* Form Actions Styles */
 .form-actions {
   gap: 12px;
 }
@@ -417,6 +476,15 @@ input[type="range"]:focus-visible {
   transform: translateY(-1px);
 }
 
+/* Multibuy Section Styles */ 
+/*
+  These styles correspond to the collapsible multibuy section in the HTML:
+  <details class="multibuy-shell" id="multibuy-shell">
+    <summary class="multibuy-summary-toggle">...</summary>
+    <form class="multibuy-form" novalidate>...</form>
+  </details>
+  It styles the expandable deal calculator and the summary text that appears in the toggle.
+*/
 .multibuy-shell {
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -465,6 +533,12 @@ input[type="range"]:focus-visible {
 }
 
 .settings-modal {
+  /*
+    These modal styles match the HTML overlays:
+    - #settings-modal = settings dialog
+    - #history-modal = calculation history dialog
+    Each modal uses a backdrop and a centered .settings-panel container.
+  */
   position: fixed;
   inset: 0;
   z-index: 40;
@@ -574,6 +648,14 @@ input[type="range"]:focus-visible {
 }
 
 .history-panel {
+  /*
+    This specifically styles the history modal section in the HTML:
+    <div id="history-modal" class="settings-modal" hidden>
+      <section class="settings-panel history-panel" ...>
+        <ul id="history-list" class="history-list"></ul>
+      </section>
+    </div>
+  */
   width: min(560px, calc(100% - 20px));
 }
 
