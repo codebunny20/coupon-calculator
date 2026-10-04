@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Coupon Calculator</title>
+
+    <!-- Theme initialization script -->
     <script>
       (function () {
         try {
@@ -16,25 +18,48 @@
         }
       })();
     </script>
+    <!-- Stylesheet link -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
+  <!-- Body content -->
   <body>
     <main class="page-shell">
       <section class="app-card" aria-label="Coupon calculator">
+        <div class="brand-bar">
+          <div class="brand-copy">
+            <span class="brand-mark" aria-hidden="true">%</span>
+            <div>
+              <p class="eyebrow">Smart checkout</p>
+              <span class="brand-name">Savings Studio</span>
+            </div>
+          </div>
+
+          <div class="header-actions">
+            <button type="button" id="settings" class="settings-button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
+              <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 8.5A3.5 3.5 0 1 1 12 15.5A3.5 3.5 0 0 1 12 8.5Z" fill="currentColor" opacity="0.9"></path>
+                <path d="M19.4 13.2a7.8 7.8 0 0 0 .08-1.2l1.68-1.3a.8.8 0 0 0 .2-1.04l-1.6-2.76a.8.8 0 0 0-.96-.4l-1.96.74a6.7 6.7 0 0 0-1.06-.62L14.3 4.3a.8.8 0 0 0-.8-.55h-3.1a.8.8 0 0 0-.8.55l-.36 2.08a6.9 6.9 0 0 0-1.06.62l-1.96-.74a.8.8 0 0 0-.96.4L4.62 9.66a.8.8 0 0 0 .2 1.04l1.68 1.3a7.8 7.8 0 0 0 .08 1.2l-1.68 1.3a.8.8 0 0 0-.2 1.04l1.6 2.76a.8.8 0 0 0 .96.4l1.96-.74c.33.25.68.46 1.06.62l.36 2.08a.8.8 0 0 0 .8.55h3.1a.8.8 0 0 0 .8-.55l.36-2.08c.38-.16.73-.37 1.06-.62l1.96.74a.8.8 0 0 0 .96-.4l1.6-2.76a.8.8 0 0 0-.2-1.04l-1.68-1.3ZM12 15.4A3.4 3.4 0 1 1 12 8.6A3.4 3.4 0 0 1 12 15.4Z" fill="currentColor"></path>
+              </svg>
+              <span>Settings</span>
+            </button>
+          </div>
+        </div>
+
         <header class="app-header">
-          <div>
+          <div class="hero-copy">
             <p class="eyebrow">Savings tool</p>
             <h1>Coupon Calculator</h1>
           </div>
-          <div class="header-actions">
-            <button type="button" id="settings" class="status-badge settings-badge" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
-              <span></span>
-              <small id="settings-label">Settings</small>
-            </button>
-            <button type="button" id="theme-toggle" class="status-badge" aria-label="Switch to dark theme" aria-pressed="false">
-              <span></span>
-              <small id="theme-label">Light</small>
-            </button>
+
+          <div class="hero-metrics" aria-label="Quick totals">
+            <div class="metric-pill">
+              <span class="metric-label">Discount</span>
+              <strong id="hero-discount-amount">$0.00</strong>
+            </div>
+            <div class="metric-pill accent-pill">
+              <span class="metric-label">Final</span>
+              <strong id="hero-final-price">$0.00</strong>
+            </div>
           </div>
         </header>
         <form method="post" class="calculator-form">
@@ -61,6 +86,8 @@
             </label>
           </div>
 
+          <!-- Quick adjustment buttons -->
+
           <div class="quick-steps" aria-label="Quick adjustment buttons">
             <button type="button" class="quick-btn" data-step="-10">-10</button>
             <button type="button" class="quick-btn" data-step="-5">-5</button>
@@ -70,6 +97,7 @@
             <button type="button" class="quick-btn" data-step="10">+10</button>
           </div>
           
+          <!-- Summary of the calculated discount and final price -->
           <div class="summary" aria-live="polite">
             <div class="summary-row">
               <span>Money taken off:</span>
@@ -84,13 +112,108 @@
           <p id="calc-error" class="message error" {% if not error %}hidden{% endif %}>{{ error if error else '' }}</p>
 
           <div class="form-actions">
-            <button type="submit" class="primary-btn">Calculate</button>
+            <button type="submit" class="primary-btn">Save result</button>
             <button type="reset" class="secondary-btn">Reset</button>
           </div>
         </form>
+
+        <!-- This is the multibuy deal calculator section -->
+        <details class="multibuy-shell" id="multibuy-shell">
+          <summary class="multibuy-summary-toggle">
+            <span class="multibuy-title">Multibuy Deal Calculator</span>
+            <small>3 for 2, 2 for 5, buy 2 get 1 free</small>
+          </summary>
+
+          <!-- Multibuy deal calculator form -->
+          <form class="multibuy-form" novalidate>
+            <div class="field-grid multibuy-grid">
+              <label class="field">
+                <span>Unit price</span>
+                <input type="number" name="unit_price" min="0" step="0.01" placeholder="2.99" required>
+              </label>
+
+              <label class="field">
+                <span>Quantity</span>
+                <input type="number" name="quantity" min="1" step="1" placeholder="6" required>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>Deal type</span>
+              <select name="deal_type" id="multibuy-deal-type" class="deal-select">
+                <option value="buy_x_get_y_free">Buy X get Y free</option>
+                <option value="x_for_y_items">X for Y items</option>
+                <option value="x_for_fixed_price">X for fixed price</option>
+              </select>
+            </label>
+
+            <div class="deal-config" data-deal="buy_x_get_y_free">
+              <div class="field-grid multibuy-grid">
+                <label class="field">
+                  <span>Buy (X)</span>
+                  <input type="number" name="buy_qty" min="1" step="1" value="2" required>
+                </label>
+                <label class="field">
+                  <span>Get free (Y)</span>
+                  <input type="number" name="free_qty" min="1" step="1" value="1" required>
+                </label>
+              </div>
+            </div>
+
+            <div class="deal-config" data-deal="x_for_y_items" hidden>
+              <div class="field-grid multibuy-grid">
+                <label class="field">
+                  <span>Items in deal (X)</span>
+                  <input type="number" name="bundle_size" min="1" step="1" value="3">
+                </label>
+                <label class="field">
+                  <span>Pay for items (Y)</span>
+                  <input type="number" name="pay_for_qty" min="0" step="1" value="2">
+                </label>
+              </div>
+            </div>
+
+            <div class="deal-config" data-deal="x_for_fixed_price" hidden>
+              <div class="field-grid multibuy-grid">
+                <label class="field">
+                  <span>Items in bundle (X)</span>
+                  <input type="number" name="bundle_size" min="1" step="1" value="2">
+                </label>
+                <label class="field">
+                  <span>Bundle price</span>
+                  <input type="number" name="bundle_price" min="0" step="0.01" value="5.00">
+                </label>
+              </div>
+            </div>
+
+            <div class="summary multibuy-summary" aria-live="polite">
+              <div class="summary-row">
+                <span>Regular total:</span>
+                <strong id="multibuy-regular">$0.00</strong>
+              </div>
+              <div class="summary-row">
+                <span>Deal total:</span>
+                <strong id="multibuy-total">$0.00</strong>
+              </div>
+              <div class="summary-row highlight">
+                <span>You save:</span>
+                <strong id="multibuy-savings">$0.00</strong>
+              </div>
+            </div>
+
+            <p class="multibuy-meta">Effective price per item: <strong id="multibuy-effective">$0.00</strong></p>
+            <p id="multibuy-error" class="message error" hidden></p>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Calculate Deal</button>
+              <button type="reset" class="secondary-btn">Reset</button>
+            </div>
+          </form>
+        </details>
       </section>
     </main>
 
+    <!-- Settings modal for adjusting application preferences -->
     <div id="settings-modal" class="settings-modal" hidden>
       <div class="settings-backdrop" data-close-settings="true"></div>
       <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
@@ -98,13 +221,22 @@
           <h2 id="settings-title">Settings</h2>
           <button type="button" class="close-settings" id="close-settings" aria-label="Close settings">x</button>
         </header>
-        <p class="settings-note">Settings panel is active. More options can be added later.</p>
+        <div class="settings-option settings-option-block">
+          <div class="toggle-row">
+            <span id="theme-label">Light mode</span>
+            <label class="switch" for="theme-toggle">
+              <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
         <div class="settings-option">
           <button type="button" id="view-history-btn" class="secondary-btn">View History</button>
         </div>
       </section>
     </div>
 
+    <!-- History modal for viewing past calculations -->
     <div id="history-modal" class="settings-modal" hidden>
       <div class="settings-backdrop" data-close-history="true"></div>
       <section class="settings-panel history-panel" role="dialog" aria-modal="true" aria-labelledby="history-title">
@@ -117,6 +249,7 @@
       </section>
     </div>
 
+    <!-- JavaScript for handling UI interactions and form submissions -->
     <script>
       const calculatorForm = document.querySelector('.calculator-form');
       const settingsButton = document.getElementById('settings');
@@ -134,10 +267,21 @@
       const quickButtons = document.querySelectorAll('.quick-btn');
       const discountAmountOutput = document.getElementById('discount-amount');
       const finalPriceOutput = document.getElementById('final-price');
+      const heroDiscountAmount = document.getElementById('hero-discount-amount');
+      const heroFinalPrice = document.getElementById('hero-final-price');
       const errorOutput = document.getElementById('calc-error');
+      const multibuyForm = document.querySelector('.multibuy-form');
+      const multibuyDealType = document.getElementById('multibuy-deal-type');
+      const multibuyDealConfigs = document.querySelectorAll('.deal-config');
+      const multibuyRegular = document.getElementById('multibuy-regular');
+      const multibuyTotal = document.getElementById('multibuy-total');
+      const multibuySavings = document.getElementById('multibuy-savings');
+      const multibuyEffective = document.getElementById('multibuy-effective');
+      const multibuyError = document.getElementById('multibuy-error');
 
       const themeStorageKey = 'coupon-calculator:theme';
       let previewDebounceId;
+      let multibuyPreviewDebounceId;
 
       function openSettingsModal() {
         if (!settingsModal) return;
@@ -180,6 +324,28 @@
         return parsed.toLocaleString();
       }
 
+      async function deleteHistoryEntry(timestamp) {
+        if (!timestamp) return;
+
+        try {
+          const response = await fetch('/history/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ timestamp }),
+          });
+          const data = await response.json();
+
+          if (!response.ok || !data.ok || !Array.isArray(data.history)) {
+            setHistoryError(data.error || 'Could not delete history item.');
+            return;
+          }
+
+          renderHistory(data.history);
+        } catch (error) {
+          setHistoryError('Could not delete history item.');
+        }
+      }
+
       function renderHistory(entries) {
         if (!historyList) return;
         historyList.innerHTML = '';
@@ -196,6 +362,9 @@
           const item = document.createElement('li');
           item.className = 'history-item';
 
+          const itemContent = document.createElement('div');
+          itemContent.className = 'history-item-content';
+
           const equation = document.createElement('p');
           equation.className = 'history-equation';
           equation.textContent = entry.equation || 'Equation unavailable';
@@ -204,8 +373,17 @@
           meta.className = 'history-meta';
           meta.textContent = formatHistoryTime(entry.timestamp);
 
-          item.appendChild(equation);
-          item.appendChild(meta);
+          const deleteButton = document.createElement('button');
+          deleteButton.type = 'button';
+          deleteButton.className = 'history-delete';
+          deleteButton.textContent = 'Delete';
+          deleteButton.setAttribute('aria-label', `Delete history item for ${formatHistoryTime(entry.timestamp)}`);
+          deleteButton.addEventListener('click', () => deleteHistoryEntry(entry.timestamp));
+
+          itemContent.appendChild(equation);
+          itemContent.appendChild(meta);
+          item.appendChild(itemContent);
+          item.appendChild(deleteButton);
           historyList.appendChild(item);
         });
       }
@@ -233,10 +411,11 @@
 
         if (themeToggle) {
           const isDark = normalizedTheme === 'dark';
+          themeToggle.checked = isDark;
           themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
           themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
           if (themeLabel) {
-            themeLabel.textContent = isDark ? 'Dark' : 'Light';
+            themeLabel.textContent = isDark ? 'Dark mode' : 'Light mode';
           }
         }
       }
@@ -373,6 +552,8 @@
           if (data.ok) {
             if (discountAmountOutput) discountAmountOutput.textContent = data.discount_amount;
             if (finalPriceOutput) finalPriceOutput.textContent = data.final_price;
+            if (heroDiscountAmount) heroDiscountAmount.textContent = data.discount_amount;
+            if (heroFinalPrice) heroFinalPrice.textContent = data.final_price;
             if (errorOutput) {
               errorOutput.textContent = '';
               errorOutput.hidden = true;
@@ -404,6 +585,99 @@
         }, 150);
       }
 
+      function setMultibuyError(message) {
+        if (!multibuyError) return;
+        if (message) {
+          multibuyError.textContent = message;
+          multibuyError.hidden = false;
+        } else {
+          multibuyError.textContent = '';
+          multibuyError.hidden = true;
+        }
+      }
+
+      function setMultibuyConfigVisibility() {
+        if (!multibuyDealType || !multibuyDealConfigs.length) return;
+        const selectedDeal = multibuyDealType.value;
+
+        multibuyDealConfigs.forEach((config) => {
+          const isActive = config.dataset.deal === selectedDeal;
+          config.hidden = !isActive;
+
+          const inputs = config.querySelectorAll('input');
+          inputs.forEach((input) => {
+            input.disabled = !isActive;
+          });
+        });
+      }
+
+      function hasCompleteMultibuyInputs() {
+        if (!multibuyForm || !multibuyDealType) return false;
+
+        const unitPrice = multibuyForm.querySelector('input[name="unit_price"]');
+        const quantity = multibuyForm.querySelector('input[name="quantity"]');
+        if (!unitPrice || !quantity) return false;
+
+        if (unitPrice.value.trim() === '' || quantity.value.trim() === '') {
+          return false;
+        }
+
+        const selectedDeal = multibuyDealType.value;
+        if (selectedDeal === 'buy_x_get_y_free') {
+          const buyQty = multibuyForm.querySelector('input[name="buy_qty"]:not([disabled])');
+          const freeQty = multibuyForm.querySelector('input[name="free_qty"]:not([disabled])');
+          return Boolean(buyQty && freeQty && buyQty.value.trim() && freeQty.value.trim());
+        }
+
+        if (selectedDeal === 'x_for_y_items') {
+          const bundleSize = multibuyForm.querySelector('input[name="bundle_size"]:not([disabled])');
+          const payForQty = multibuyForm.querySelector('input[name="pay_for_qty"]:not([disabled])');
+          return Boolean(bundleSize && payForQty && bundleSize.value.trim() && payForQty.value.trim());
+        }
+
+        const bundleSize = multibuyForm.querySelector('input[name="bundle_size"]:not([disabled])');
+        const bundlePrice = multibuyForm.querySelector('input[name="bundle_price"]:not([disabled])');
+        return Boolean(bundleSize && bundlePrice && bundleSize.value.trim() && bundlePrice.value.trim());
+      }
+
+      async function requestMultibuyCalculation(endpoint) {
+        if (!multibuyForm) return;
+        const formData = new FormData(multibuyForm);
+
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            body: formData,
+          });
+          const data = await response.json();
+
+          if (!data.ok) {
+            setMultibuyError(data.error || 'Could not calculate this deal.');
+            return;
+          }
+
+          if (multibuyRegular) multibuyRegular.textContent = data.regular_total;
+          if (multibuyTotal) multibuyTotal.textContent = data.deal_total;
+          if (multibuySavings) multibuySavings.textContent = data.savings;
+          if (multibuyEffective) multibuyEffective.textContent = data.effective_unit_price;
+          setMultibuyError('');
+        } catch (error) {
+          setMultibuyError('Could not calculate this deal.');
+        }
+      }
+
+      function queueMultibuyPreview() {
+        if (!hasCompleteMultibuyInputs()) {
+          setMultibuyError('');
+          return;
+        }
+
+        window.clearTimeout(multibuyPreviewDebounceId);
+        multibuyPreviewDebounceId = window.setTimeout(() => {
+          requestMultibuyCalculation('/multibuy/preview');
+        }, 150);
+      }
+
       if (calculatorForm) {
         calculatorForm.addEventListener('input', queueLivePreview);
         calculatorForm.addEventListener('change', queueLivePreview);
@@ -416,10 +690,41 @@
         calculatorForm.addEventListener('reset', () => {
           if (discountAmountOutput) discountAmountOutput.textContent = '$0.00';
           if (finalPriceOutput) finalPriceOutput.textContent = '$0.00';
+          if (heroDiscountAmount) heroDiscountAmount.textContent = '$0.00';
+          if (heroFinalPrice) heroFinalPrice.textContent = '$0.00';
           if (errorOutput) {
             errorOutput.textContent = '';
             errorOutput.hidden = true;
           }
+        });
+      }
+
+      if (multibuyDealType) {
+        setMultibuyConfigVisibility();
+        multibuyDealType.addEventListener('change', () => {
+          setMultibuyConfigVisibility();
+          queueMultibuyPreview();
+        });
+      }
+
+      if (multibuyForm) {
+        multibuyForm.addEventListener('input', queueMultibuyPreview);
+        multibuyForm.addEventListener('change', queueMultibuyPreview);
+
+        multibuyForm.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          await requestMultibuyCalculation('/multibuy/calculate');
+        });
+
+        multibuyForm.addEventListener('reset', () => {
+          window.setTimeout(() => {
+            setMultibuyConfigVisibility();
+            if (multibuyRegular) multibuyRegular.textContent = '$0.00';
+            if (multibuyTotal) multibuyTotal.textContent = '$0.00';
+            if (multibuySavings) multibuySavings.textContent = '$0.00';
+            if (multibuyEffective) multibuyEffective.textContent = '$0.00';
+            setMultibuyError('');
+          }, 0);
         });
       }
     </script>
