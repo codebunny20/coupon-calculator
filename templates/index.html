@@ -27,15 +27,22 @@
       <section class="app-card" aria-label="Coupon calculator">
         <div class="brand-bar">
           <div class="brand-copy">
-            <span class="brand-mark" aria-hidden="true">%</span>
+            
             <div>
-              <p class="eyebrow">Smart checkout</p>
-              <span class="brand-name">Savings Studio</span>
+              
+              <span class="brand-name">Coupon calculator</span>
             </div>
           </div>
 
+          <!-- Header actions, this is where the help and settings buttons are located -->
           <div class="header-actions">
-            <button type="button" id="settings" class="settings-button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
+            <button type="button" id="help-button" class="settings-button help-button" aria-label="Open help" aria-haspopup="dialog" aria-controls="help-modal" aria-expanded="false">
+              <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 2.5a9.5 9.5 0 1 0 9.5 9.5A9.5 9.5 0 0 0 12 2.5Zm0 15.2a1.18 1.18 0 1 1 1.18-1.18A1.17 1.17 0 0 1 12 17.7Zm1.7-5.38-.66.36a2.13 2.13 0 0 0-1.04 1.84v.23h-1.4v-.32a3.55 3.55 0 0 1 1.7-3.09l.73-.39c.6-.33.95-.84.95-1.48a1.97 1.97 0 0 0-3.94.03H8.1a3.38 3.38 0 0 1 6.76 0c0 1.37-.75 2.39-1.66 3.06Z" fill="currentColor"></path>
+              </svg>
+              <span>Help</span>
+            </button>
+            <button type="button" id="settings-button" class="settings-button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
               <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 8.5A3.5 3.5 0 1 1 12 15.5A3.5 3.5 0 0 1 12 8.5Z" fill="currentColor" opacity="0.9"></path>
                 <path d="M19.4 13.2a7.8 7.8 0 0 0 .08-1.2l1.68-1.3a.8.8 0 0 0 .2-1.04l-1.6-2.76a.8.8 0 0 0-.96-.4l-1.96.74a6.7 6.7 0 0 0-1.06-.62L14.3 4.3a.8.8 0 0 0-.8-.55h-3.1a.8.8 0 0 0-.8.55l-.36 2.08a6.9 6.9 0 0 0-1.06.62l-1.96-.74a.8.8 0 0 0-.96.4L4.62 9.66a.8.8 0 0 0 .2 1.04l1.68 1.3a7.8 7.8 0 0 0 .08 1.2l-1.68 1.3a.8.8 0 0 0-.2 1.04l1.6 2.76a.8.8 0 0 0 .96.4l1.96-.74c.33.25.68.46 1.06.62l.36 2.08a.8.8 0 0 0 .8.55h3.1a.8.8 0 0 0 .8-.55l.36-2.08c.38-.16.73-.37 1.06-.62l1.96.74a.8.8 0 0 0 .96-.4l1.6-2.76a.8.8 0 0 0-.2-1.04l-1.68-1.3ZM12 15.4A3.4 3.4 0 1 1 12 8.6A3.4 3.4 0 0 1 12 15.4Z" fill="currentColor"></path>
@@ -47,13 +54,13 @@
 
         <header class="app-header">
           <div class="hero-copy">
-            <p class="eyebrow">Savings tool</p>
-            <h1>Coupon Calculator</h1>
+            <p class="eyebrow">Made by bunny</p>
+            <h1>Welcome to the Coupon Calculator</h1>
           </div>
 
           <div class="hero-metrics" aria-label="Quick totals">
             <div class="metric-pill">
-              <span class="metric-label">Discount</span>
+              <span class="metric-label">money off</span>
               <strong id="hero-discount-amount">$0.00</strong>
             </div>
             <div class="metric-pill accent-pill">
@@ -108,8 +115,11 @@
         <!-- This is the multibuy deal calculator section -->
         <details class="multibuy-shell" id="multibuy-shell">
           <summary class="multibuy-summary-toggle">
-            <span class="multibuy-title">Multibuy Deal Calculator</span>
-            <small>3 for 2, 2 for 5, buy 2 get 1 free</small>
+            <div class="multibuy-header-copy">
+              <span class="multibuy-title">Multibuy Deal Calculator</span>
+              <small>3 for 2, 2 for 5, buy 2 get 1 free</small>
+            </div>
+            <span class="multibuy-badge">Live</span>
           </summary>
 
           <!-- Multibuy deal calculator form -->
@@ -193,13 +203,32 @@
             <p id="multibuy-error" class="message error" hidden></p>
 
             <div class="form-actions">
-              <button type="submit" class="primary-btn">Calculate Deal</button>
+              <button type="submit" class="primary-btn">Save deal</button>
               <button type="reset" class="secondary-btn">Reset</button>
             </div>
           </form>
         </details>
       </section>
     </main>
+
+    <!-- Help modal for common application guidance -->
+    <div id="help-modal" class="settings-modal" hidden>
+      <div class="settings-backdrop" data-close-help="true"></div>
+      <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <header class="settings-header">
+          <h2 id="help-title">Help</h2>
+          <button type="button" class="close-settings" id="close-help" aria-label="Close help">x</button>
+        </header>
+        <div class="settings-option settings-option-block">
+          <p>Use the calculator to estimate your discount quickly before checkout.</p>
+          <ul>
+            <li>Choose a percentage or fixed discount.</li>
+            <li>Use the quick adjustment buttons for small increments.</li>
+            <li>Save a result in the main form, then review past calculations in Settings.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
 
     <!-- Settings modal for adjusting application preferences -->
     <div id="settings-modal" class="settings-modal" hidden>

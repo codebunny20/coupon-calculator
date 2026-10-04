@@ -1,7 +1,10 @@
 const calculatorForm = document.querySelector('.calculator-form');
-const settingsButton = document.getElementById('settings');
+const settingsButton = document.getElementById('settings-button') || document.getElementById('settings');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettingsButton = document.getElementById('close-settings');
+const helpButton = document.getElementById('help-button');
+const helpModal = document.getElementById('help-modal');
+const closeHelpButton = document.getElementById('close-help');
 const viewHistoryButton = document.getElementById('view-history-btn');
 const historyModal = document.getElementById('history-modal');
 const closeHistoryButton = document.getElementById('close-history');
@@ -40,6 +43,18 @@ function closeSettingsModal() {
   if (!settingsModal) return;
   settingsModal.hidden = true;
   if (settingsButton) settingsButton.setAttribute('aria-expanded', 'false');
+}
+
+function openHelpModal() {
+  if (!helpModal) return;
+  helpModal.hidden = false;
+  if (helpButton) helpButton.setAttribute('aria-expanded', 'true');
+}
+
+function closeHelpModal() {
+  if (!helpModal) return;
+  helpModal.hidden = true;
+  if (helpButton) helpButton.setAttribute('aria-expanded', 'false');
 }
 
 function setHistoryError(message) {
@@ -203,9 +218,21 @@ if (settingsButton) {
   });
 }
 
+if (helpButton) {
+  helpButton.addEventListener('click', () => {
+    openHelpModal();
+  });
+}
+
 if (closeSettingsButton) {
   closeSettingsButton.addEventListener('click', () => {
     closeSettingsModal();
+  });
+}
+
+if (closeHelpButton) {
+  closeHelpButton.addEventListener('click', () => {
+    closeHelpModal();
   });
 }
 
@@ -231,6 +258,15 @@ if (settingsModal) {
   });
 }
 
+if (helpModal) {
+  helpModal.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target && target.closest && target.closest('[data-close-help="true"]')) {
+      closeHelpModal();
+    }
+  });
+}
+
 if (historyModal) {
   historyModal.addEventListener('click', (event) => {
     const target = event.target;
@@ -243,6 +279,9 @@ if (historyModal) {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && settingsModal && !settingsModal.hidden) {
     closeSettingsModal();
+  }
+  if (event.key === 'Escape' && helpModal && !helpModal.hidden) {
+    closeHelpModal();
   }
   if (event.key === 'Escape' && historyModal && !historyModal.hidden) {
     closeHistoryModal();

@@ -223,6 +223,16 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 10px;
+}
+
+.help-button {
+  border-color: rgba(79, 110, 247, 0.35);
+  background: rgba(79, 110, 247, 0.06);
+}
+
+.help-button:hover {
+  border-color: rgba(79, 110, 247, 0.55);
 }
 /* Calculator and Multibuy Form Styles  these are used for the main calculation forms */
 /*
@@ -486,17 +496,26 @@ input[type="range"]:focus-visible {
   It styles the expandable deal calculator and the summary text that appears in the toggle.
 */
 .multibuy-shell {
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.22);
-  padding: 0 14px 14px;
   margin-top: 22px;
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  padding: 0 16px 16px;
+}
+
+.multibuy-form {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
 }
 
 .multibuy-summary-toggle {
   list-style: none;
   cursor: pointer;
-  padding: 14px 2px;
+  padding: 16px 4px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -507,9 +526,32 @@ input[type="range"]:focus-visible {
   display: none;
 }
 
+.multibuy-header-copy {
+  display: grid;
+  gap: 4px;
+}
+
 .multibuy-title {
   font-weight: 800;
   letter-spacing: -0.02em;
+  font-size: 1.1rem;
+}
+
+.multibuy-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 28px;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(79, 110, 247, 0.12);
+  border: 1px solid rgba(79, 110, 247, 0.18);
+  color: var(--accent-strong);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .multibuy-summary-toggle small {
