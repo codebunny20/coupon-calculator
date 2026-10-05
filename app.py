@@ -431,8 +431,10 @@ def delete_history():
 
     return jsonify({"ok": True, "history": list(reversed(remaining))})
 
-## bellow is the logic that saves the calculation results and equation to the history.json file
-
+@app.route("/template/pages/help")
+def about_page():
+    return render_template("about.html")
+    
 # Run the application
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)

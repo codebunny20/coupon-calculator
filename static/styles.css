@@ -757,6 +757,42 @@ input[type="range"]:focus-visible {
   text-align: center;
 }
 
+.tk-footer {
+  margin-top: 16px;
+  padding: 8px 10px 2px;
+}
+
+.tk-footer-bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
+.tk-footer-link {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.tk-footer-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.tk-footer-separator {
+  opacity: 0.55;
+}
+
+.tk-footer-copy {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 @media (max-width: 760px) {
   .app-header {
     flex-direction: column;
@@ -809,5 +845,20 @@ input[type="range"]:focus-visible {
 
   .multibuy-summary-toggle small {
     text-align: left;
+  }
+
+  .tk-footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .tk-footer-bottom-content {
+    justify-content: flex-start;
+    gap: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .tk-footer-separator {
+    display: none;
   }
 }
