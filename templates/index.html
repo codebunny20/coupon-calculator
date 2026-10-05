@@ -34,14 +34,8 @@
             </div>
           </div>
 
-          <!-- Header actions, this is where the help and settings buttons are located -->
+          <!-- Header actions -->
           <div class="header-actions">
-            <button type="button" id="help-button" class="settings-button help-button" aria-label="Open help" aria-haspopup="dialog" aria-controls="help-modal" aria-expanded="false">
-              <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M12 2.5a9.5 9.5 0 1 0 9.5 9.5A9.5 9.5 0 0 0 12 2.5Zm0 15.2a1.18 1.18 0 1 1 1.18-1.18A1.17 1.17 0 0 1 12 17.7Zm1.7-5.38-.66.36a2.13 2.13 0 0 0-1.04 1.84v.23h-1.4v-.32a3.55 3.55 0 0 1 1.7-3.09l.73-.39c.6-.33.95-.84.95-1.48a1.97 1.97 0 0 0-3.94.03H8.1a3.38 3.38 0 0 1 6.76 0c0 1.37-.75 2.39-1.66 3.06Z" fill="currentColor"></path>
-              </svg>
-              <span>Help</span>
-            </button>
             <button type="button" id="settings-button" class="settings-button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
               <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 8.5A3.5 3.5 0 1 1 12 15.5A3.5 3.5 0 0 1 12 8.5Z" fill="currentColor" opacity="0.9"></path>
@@ -213,37 +207,18 @@
       <!-- Footer shell: replace href values and labels as needed -->
       <footer class="tk-footer" aria-label="Footer links">
         <div class="tk-footer-bottom-content">
-          <a id="footer-link-help" class="tk-footer-link" href="#">Help</a>
+          <a id="footer-link-help" class="tk-footer-link" href="/pages/help">Help</a>
           <span class="tk-footer-separator" aria-hidden="true">|</span>
-          <a id="footer-link-about" class="tk-footer-link" href="#">About</a>
+          <a id="footer-link-about" class="tk-footer-link" href="/pages/about">About</a>
           <span class="tk-footer-separator" aria-hidden="true">|</span>
-          <a id="footer-link-privacy" class="tk-footer-link" href="#" target="_blank" rel="noreferrer noopener">Privacy policy</a>
+          <a id="footer-link-privacy" class="tk-footer-link" href="/pages/privacy-policy">Privacy policy</a>
           <span class="tk-footer-separator" aria-hidden="true">|</span>
-          <a id="footer-link-donate" class="tk-footer-link" href="#">Donate</a>
+          <a id="footer-link-donate" class="tk-footer-link" href="/pages/donate">Donate</a>
           <span class="tk-footer-separator" aria-hidden="true">|</span>
           <span class="tk-footer-copy">More coming soon...</span>
         </div>
       </footer>
     </main>
-
-    <!-- Help modal for common application guidance -->
-    <div id="help-modal" class="settings-modal" hidden>
-      <div class="settings-backdrop" data-close-help="true"></div>
-      <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="help-title">
-        <header class="settings-header">
-          <h2 id="help-title">Help</h2>
-          <button type="button" class="close-settings" id="close-help" aria-label="Close help">x</button>
-        </header>
-        <div class="settings-option settings-option-block">
-          <p>Use the calculator to estimate your discount quickly before checkout.</p>
-          <ul>
-            <li>Choose a percentage or fixed discount.</li>
-            <li>Use the quick adjustment buttons for small increments.</li>
-            <li>Save a result in the main form, then review past calculations in Settings.</li>
-          </ul>
-        </div>
-      </section>
-    </div>
 
     <!-- Settings modal for adjusting application preferences -->
     <div id="settings-modal" class="settings-modal" hidden>

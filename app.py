@@ -431,9 +431,24 @@ def delete_history():
 
     return jsonify({"ok": True, "history": list(reversed(remaining))})
 
-@app.route("/template/pages/help")
+@app.route("/pages/help")
+def help_page():
+    return render_template("pages/help.html")
+
+
+@app.route("/pages/about")
 def about_page():
-    return render_template("about.html")
+    return render_template("pages/about.html")
+
+
+@app.route("/pages/privacy-policy")
+def privacy_policy_page():
+    return render_template("pages/privacy policy.html")
+
+
+@app.route("/pages/donate")
+def donate_page():
+    return render_template("pages/donate.html")
     
 # Run the application
 if __name__ == "__main__":

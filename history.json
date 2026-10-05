@@ -1,31 +1,3 @@
 {
-  "history": [
-    {
-      "timestamp": "2026-10-04T03:50:18.091475+00:00",
-      "discount_type": "percent",
-      "original_price": "100.00",
-      "discount_value": "20.00",
-      "discount_amount": "20.00",
-      "final_price": "80.00",
-      "equation": "$100.00 - 20.00% ($20.00) = $80.00"
-    },
-    {
-      "timestamp": "2026-10-04T03:59:49.724309+00:00",
-      "discount_type": "percent",
-      "original_price": "100.00",
-      "discount_value": "30.00",
-      "discount_amount": "30.00",
-      "final_price": "70.00",
-      "equation": "$100.00 - 30.00% ($30.00) = $70.00"
-    },
-    {
-      "timestamp": "2026-10-04T08:41:32.248896+00:00",
-      "discount_type": "percent",
-      "original_price": "100.00",
-      "discount_value": "20.00",
-      "discount_amount": "20.00",
-      "final_price": "80.00",
-      "equation": "$100.00 - 20.00% ($20.00) = $80.00"
-    }
-  ]
+  "history": []
 }
