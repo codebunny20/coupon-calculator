@@ -1,69 +1,93 @@
 # Coupon Calculator
 
-A lightweight Flask app designed to make checkout math faster, clearer, and more accurate. It helps users calculate the discount amount and final price before making a purchase, while keeping the logic strict enough to prevent bad input and messy rounding.
+A lightweight Flask app for fast, reliable checkout math. It helps shoppers and cashiers quickly estimate discount savings, compare final prices, and evaluate bundle-style deals without relying on error-prone mental math.
 
-[The link to the live app is below:]
-[Open Coupon Calculator](https://coupon-calculator.up.railway.app)
+Live app: [Open Coupon Calculator](https://coupon-calculator.up.railway.app)
 
-## Why I built it
+## Overview
 
-I’ve been working toward becoming a better developer and engineer, and one of the biggest lessons I’ve learned and believe is that real problems often lead to the best projects. I recently started a job as a cashier, and Im not good at math in the slightest and i deal with descalcula, so discounts and price calculations can become confusing, especially during busy checkout moments or when helping older shoppers who are not comfortable with technology.
+Coupon Calculator is designed for real-world shopping scenarios where speed and accuracy matter. Instead of manually calculating discounts in the middle of a busy checkout, users can enter price information and get clear, validated results instantly.
 
-I needed something simple, reliable, and easy to use that could reduce mental math mistakes and make pricing more transparent. That idea became this calculator.
+The app supports both standard discount calculations and multibuy savings scenarios, making it useful for everyday retail decisions as well as more complex promotional offers.
 
-## What the app does
+## Features
 
-The app allows a user to:
+- Percentage and fixed-amount discount calculations
+- Automatic validation for invalid or negative inputs
+- Protection against unrealistic values such as discounts over 100%
+- Money-safe calculations using Python’s Decimal type
+- Rounded totals to two decimal places for currency accuracy
+- Multibuy deal support for:
+  - buy X get Y free
+  - X for Y items
+  - bundle pricing
+- Recent calculation history with delete support
+- Simple, mobile-friendly UI for fast use
 
-- enter an original price
-- choose a percentage discount or a fixed discount amount
-- validate the inputs before calculating
-- see exactly how much money is saved
-- view the final price after the discount is applied
+## How it works
 
-It is built for everyday shopping scenarios where the user needs a quick and trustworthy estimate.
+The app takes an original price and a discount value, validates the input, and then calculates:
 
-## Key features
+- discount amount
+- final price
+- savings percentage
+- total savings
 
-- Percentage discounts up to 100%
-- Fixed-amount discounts
-- Negative-value validation
-- Protection against invalid numeric input
-- Currency-safe rounding to two decimal places
-- Clear, simple interface for fast use
+For multibuy deals, it can also estimate:
 
-## Technical details
+- regular total
+- deal total
+- savings
+- effective unit price
 
-This project is built with Flask and uses Python’s Decimal type to reduce floating-point precision issues when working with money. That helps avoid tiny calculation errors that can happen with standard float math.
+## Tech stack
 
-The app also validates user inputs so values like negative prices or percentages above 100% are rejected before they can produce unrealistic results.
+- Flask
+- Python
+- Decimal for precise money handling
+- HTML, CSS, and JavaScript for the front end
+- JSON-based local history storage
 
 ## Project structure
 
-- `app.py` — Flask application logic and discount calculations
-- `templates/index.html` — user form and displayed results
-- `static/styles.css` — styling for the interface
-- `requirements.txt` — Python dependencies
+- `app.py` – Flask routes and calculation logic
+- `logic.js` – front-end behavior and live previews
+- `templates/` – HTML templates for the main app and supporting pages
+- `static/` – CSS and static assets
+- `history.json` – saved calculation history
 
 ## Run locally
 
+1. Clone the repository
+2. Create and activate a virtual environment
+3. Install dependencies
+4. Start the app
+
 ```bash
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
 ```
 
-Then open the app in your browser at `http://localhost:5000`.
+Then open:
 
-## Why this project matters to me
+```text
+http://localhost:8000
+```
 
-This project is more than just a calculator. It is a practical tool built from a real-world need, and it reflects the kind of developer I want to become: someone who solves problems with simple, useful solutions.
+## Deployment
 
-It also reminds me that the best software often starts with a small pain point in everyday life.
+This project is deployed on Railway and is configured to run as a Flask web app in production.
 
-## Final thoughts
+## Why this project matters
 
-This calculator may be small, but it solves a genuine problem in a straightforward and helpful way. It combines clean UI, safe validation, and money-focused logic into a tool that is useful in real-life situations.
+This app was built around a practical everyday problem: doing quick, accurate pricing math under pressure. It reflects a simple but important software principle—solve a real problem with a tool that is clear, useful, and trustworthy.
 
-If you’re learning to code, I think this is a great example of building something meaningful from a real-world need rather than just following tutorials. Sometimes the best projects are the ones that make a small part of everyday life easier.
+## License
 
-You can try the app here: [Open Coupon Calculator](https://coupon-calculator.up.railway.app)
+This project is available for personal and educational use.
+
+## Contributing
+
+Contributions are welcome. If you want to improve the calculator, add better validation, expand deal types, or improve the UI, feel free to open a pull request or suggest changes.

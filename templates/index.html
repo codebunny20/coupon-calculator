@@ -111,85 +111,108 @@
           <summary class="multibuy-summary-toggle">
             <div class="multibuy-header-copy">
               <span class="multibuy-title">Multibuy Deal Calculator</span>
-              <small>3 for 2, 2 for 5, buy 2 get 1 free</small>
             </div>
-            <span class="multibuy-badge">Live</span>
           </summary>
 
           <!-- Multibuy deal calculator form -->
           <form class="multibuy-form" novalidate>
-            <div class="field-grid multibuy-grid">
-              <label class="field">
-                <span>Unit price</span>
-                <input type="number" name="unit_price" min="0" step="0.01" placeholder="2.99" required>
-              </label>
+            <div class="multibuy-header-layout">
+              <div class="multibuy-main-panel">
+                <div class="field-grid multibuy-grid">
+                  <label class="field">
+                    <span>Unit price</span>
+                    <input type="number" name="unit_price" min="0" step="0.01" placeholder="2.99" required>
+                  </label>
 
-              <label class="field">
-                <span>Quantity</span>
-                <input type="number" name="quantity" min="1" step="1" placeholder="6" required>
-              </label>
-            </div>
+                  <label class="field">
+                    <span>Quantity</span>
+                    <input type="number" name="quantity" min="1" step="1" placeholder="6" required>
+                  </label>
+                </div>
 
-            <label class="field">
-              <span>Deal type</span>
-              <select name="deal_type" id="multibuy-deal-type" class="deal-select">
-                <option value="buy_x_get_y_free">Buy X get Y free</option>
-                <option value="x_for_y_items">X for Y items</option>
-                <option value="x_for_fixed_price">X for fixed price</option>
-              </select>
-            </label>
+                <div class="multibuy-deal-picker" role="radiogroup" aria-label="Choose a multibuy deal type">
+                  <div class="picker-label-row">
+                    <span>Deal type</span>
+                  </div>
 
-            <div class="deal-config" data-deal="buy_x_get_y_free">
-              <div class="field-grid multibuy-grid">
-                <label class="field">
-                  <span>Buy (X)</span>
-                  <input type="number" name="buy_qty" min="1" step="1" value="2" required>
-                </label>
-                <label class="field">
-                  <span>Get free (Y)</span>
-                  <input type="number" name="free_qty" min="1" step="1" value="1" required>
-                </label>
+                  <label class="multibuy-option is-active">
+                    <input type="radio" name="deal_type" value="buy_x_get_y_free" checked>
+                    <span class="multibuy-option-copy">
+                      <strong>Buy X get Y free</strong>
+                      <small>Example: Buy 2, get 1 free</small>
+                    </span>
+                  </label>
+
+                  <label class="multibuy-option">
+                    <input type="radio" name="deal_type" value="x_for_y_items">
+                    <span class="multibuy-option-copy">
+                      <strong>X for Y items</strong>
+                      <small>Example: 3 for 2</small>
+                    </span>
+                  </label>
+
+                  <label class="multibuy-option">
+                    <input type="radio" name="deal_type" value="x_for_fixed_price">
+                    <span class="multibuy-option-copy">
+                      <strong>X for fixed price</strong>
+                      <small>Example: 2 for $5</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="deal-config" data-deal="buy_x_get_y_free">
+                  <div class="field-grid multibuy-grid">
+                    <label class="field">
+                      <span>Buy (X)</span>
+                      <input type="number" name="buy_qty" min="1" step="1" value="2" required>
+                    </label>
+                    <label class="field">
+                      <span>Get free (Y)</span>
+                      <input type="number" name="free_qty" min="1" step="1" value="1" required>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="deal-config" data-deal="x_for_y_items" hidden>
+                  <div class="field-grid multibuy-grid">
+                    <label class="field">
+                      <span>Items in deal (X)</span>
+                      <input type="number" name="bundle_size" min="1" step="1" value="3">
+                    </label>
+                    <label class="field">
+                      <span>Pay for items (Y)</span>
+                      <input type="number" name="pay_for_qty" min="0" step="1" value="2">
+                    </label>
+                  </div>
+                </div>
+
+                <div class="deal-config" data-deal="x_for_fixed_price" hidden>
+                  <div class="field-grid multibuy-grid">
+                    <label class="field">
+                      <span>Items in bundle (X)</span>
+                      <input type="number" name="bundle_size" min="1" step="1" value="2">
+                    </label>
+                    <label class="field">
+                      <span>Bundle price</span>
+                      <input type="number" name="bundle_price" min="0" step="0.01" value="5.00">
+                    </label>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div class="deal-config" data-deal="x_for_y_items" hidden>
-              <div class="field-grid multibuy-grid">
-                <label class="field">
-                  <span>Items in deal (X)</span>
-                  <input type="number" name="bundle_size" min="1" step="1" value="3">
-                </label>
-                <label class="field">
-                  <span>Pay for items (Y)</span>
-                  <input type="number" name="pay_for_qty" min="0" step="1" value="2">
-                </label>
-              </div>
-            </div>
-
-            <div class="deal-config" data-deal="x_for_fixed_price" hidden>
-              <div class="field-grid multibuy-grid">
-                <label class="field">
-                  <span>Items in bundle (X)</span>
-                  <input type="number" name="bundle_size" min="1" step="1" value="2">
-                </label>
-                <label class="field">
-                  <span>Bundle price</span>
-                  <input type="number" name="bundle_price" min="0" step="0.01" value="5.00">
-                </label>
-              </div>
-            </div>
-
-            <div class="summary multibuy-summary" aria-live="polite">
-              <div class="summary-row">
-                <span>Regular total:</span>
-                <strong id="multibuy-regular">$0.00</strong>
-              </div>
-              <div class="summary-row">
-                <span>Deal total:</span>
-                <strong id="multibuy-total">$0.00</strong>
-              </div>
-              <div class="summary-row highlight">
-                <span>You save:</span>
-                <strong id="multibuy-savings">$0.00</strong>
+              <div class="summary multibuy-summary" aria-live="polite">
+                <div class="summary-row">
+                  <span>Regular total:</span>
+                  <strong id="multibuy-regular">$0.00</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Deal total:</span>
+                  <strong id="multibuy-total">$0.00</strong>
+                </div>
+                <div class="summary-row highlight">
+                  <span>You save:</span>
+                  <strong id="multibuy-savings">$0.00</strong>
+                </div>
               </div>
             </div>
 

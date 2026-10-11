@@ -21,8 +21,10 @@ const heroDiscountAmount = document.getElementById('hero-discount-amount');
 const heroFinalPrice = document.getElementById('hero-final-price');
 const errorOutput = document.getElementById('calc-error');
 const multibuyForm = document.querySelector('.multibuy-form');
+const multibuyDealTypeInputs = document.querySelectorAll('input[name="deal_type"]');
 const multibuyDealType = document.getElementById('multibuy-deal-type');
 const multibuyDealConfigs = document.querySelectorAll('.deal-config');
+const multibuyDealOptions = document.querySelectorAll('.multibuy-option');
 const multibuyRegular = document.getElementById('multibuy-regular');
 const multibuyTotal = document.getElementById('multibuy-total');
 const multibuySavings = document.getElementById('multibuy-savings');
@@ -382,9 +384,16 @@ function setMultibuyError(message) {
   }
 }
 
+function getSelectedMultibuyDeal() {
+  const checkedInput = multibuyForm ? multibuyForm.querySelector('input[name="deal_type"]:checked') : null;
+  if (checkedInput) {
+    return checkedInput.value;
+  }
+  return multibuyDealType ? multibuyDealType.value : 'buy_x_get_y_free';
+}
+
 function setMultibuyConfigVisibility() {
-  if (!multibuyDealType || !multibuyDealConfigs.length) return;
-  const selectedDeal = multibuyDealType.value;
+  const selectedDeal = getSelectedMultibuyDeal();
 
   multibuyDealConfigs.forEach((config) => {
     const isActive = config.dataset.deal === selectedDeal;
@@ -395,10 +404,18 @@ function setMultibuyConfigVisibility() {
       input.disabled = !isActive;
     });
   });
+
+  multibuyDealOptions.forEach((option) => {
+    const radio = option.querySelector('input[type="radio"]');
+    const isActive = radio && radio.value === selectedDeal;
+    option.classList.toggle('is-active', Boolean(isActive));
+    option.setAttribute('aria-checked', isActive ? 'true' : 'false');
+  });
+
 }
 
 function hasCompleteMultibuyInputs() {
-  if (!multibuyForm || !multibuyDealType) return false;
+  if (!multibuyForm) return false;
 
   const unitPrice = multibuyForm.querySelector('input[name="unit_price"]');
   const quantity = multibuyForm.querySelector('input[name="quantity"]');
@@ -408,7 +425,7 @@ function hasCompleteMultibuyInputs() {
     return false;
   }
 
-  const selectedDeal = multibuyDealType.value;
+  const selectedDeal = getSelectedMultibuyDeal();
   if (selectedDeal === 'buy_x_get_y_free') {
     const buyQty = multibuyForm.querySelector('input[name="buy_qty"]:not([disabled])');
     const freeQty = multibuyForm.querySelector('input[name="free_qty"]:not([disabled])');
@@ -485,12 +502,14 @@ if (calculatorForm) {
   });
 }
 
-if (multibuyDealType) {
-  setMultibuyConfigVisibility();
-  multibuyDealType.addEventListener('change', () => {
-    setMultibuyConfigVisibility();
-    queueMultibuyPreview();
+if (multibuyDealTypeInputs.length) {
+  multibuyDealTypeInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      setMultibuyConfigVisibility();
+      queueMultibuyPreview();
+    });
   });
+  setMultibuyConfigVisibility();
 }
 
 if (multibuyForm) {
@@ -504,6 +523,9 @@ if (multibuyForm) {
 
   multibuyForm.addEventListener('reset', () => {
     window.setTimeout(() => {
+      multibuyDealTypeInputs.forEach((input) => {
+        input.checked = input.value === 'buy_x_get_y_free';
+      });
       setMultibuyConfigVisibility();
       if (multibuyRegular) multibuyRegular.textContent = '$0.00';
       if (multibuyTotal) multibuyTotal.textContent = '$0.00';
