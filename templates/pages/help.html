@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Help</title>
+		<title>Help | Coupon Calculator</title>
 		<script>
 			(function () {
 				try {
@@ -17,31 +17,286 @@
 			})();
 		</script>
 		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+		<style>
+			.help-page {
+				padding: 26px 22px 18px;
+			}
+			.help-topbar {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 14px;
+				margin-bottom: 10px;
+			}
+			.help-page h1 {
+				font-size: clamp(2rem, 4vw, 3rem);
+				letter-spacing: -0.06em;
+			}
+			.help-subtitle {
+				margin: 0 0 20px;
+				font-size: 1.05rem;
+				line-height: 1.6;
+				color: var(--muted);
+			}
+			.help-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 16px;
+				margin: 18px 0 24px;
+			}
+			.info-card {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				padding: 18px;
+				border: 1px solid var(--line);
+				border-radius: 20px;
+				background: var(--panel-soft);
+			}
+			.info-card h2,
+			.help-section h2 {
+				margin: 0;
+				font-size: 1.2rem;
+				letter-spacing: -0.04em;
+			}
+			.highlight-card {
+				background: linear-gradient(135deg, rgba(79, 110, 247, 0.12), rgba(122, 162, 255, 0.1));
+				border-color: rgba(79, 110, 247, 0.26);
+			}
+			.badge {
+				display: inline-flex;
+				width: fit-content;
+				padding: 0.35rem 0.65rem;
+				border-radius: 999px;
+				background: rgba(79, 110, 247, 0.1);
+				color: var(--accent-strong);
+				font-size: 0.72rem;
+				font-weight: 800;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+			.help-section {
+				margin-top: 28px;
+				padding-top: 20px;
+				border-top: 1px solid var(--line);
+			}
+			.help-section p,
+			.help-section li {
+				color: var(--text);
+				line-height: 1.65;
+			}
+			.steps {
+				margin: 16px 0 0;
+				padding-left: 0;
+				list-style: none;
+				display: grid;
+				gap: 12px;
+			}
+			.steps li {
+				display: flex;
+				align-items: flex-start;
+				gap: 12px;
+				padding: 12px 14px;
+				border: 1px solid var(--line);
+				border-radius: 14px;
+				background: rgba(255, 255, 255, 0.26);
+			}
+			.step-number {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 26px;
+				height: 26px;
+				border-radius: 50%;
+				background: var(--accent-soft);
+				color: var(--accent-strong);
+				font-weight: 800;
+				font-size: 0.82rem;
+				flex-shrink: 0;
+			}
+			.example-box {
+				margin-top: 16px;
+				padding: 16px 18px;
+				border-left: 4px solid var(--accent);
+				border-radius: 14px;
+				background: rgba(79, 110, 247, 0.05);
+			}
+			.example-box strong {
+				display: block;
+				margin-bottom: 8px;
+			}
+			.tip-list {
+				list-style: none;
+				padding: 0;
+				margin: 12px 0 0;
+				display: grid;
+				gap: 10px;
+			}
+			.tip-list li {
+				position: relative;
+				padding-left: 20px;
+			}
+			.tip-list li::before {
+				content: "•";
+				position: absolute;
+				left: 0;
+				color: var(--accent);
+				font-weight: 700;
+			}
+			.formula-box {
+				margin-top: 16px;
+				padding: 14px 16px;
+				border-radius: 14px;
+				border: 1px solid var(--line);
+				background: var(--panel-strong);
+				font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+				font-size: 0.95rem;
+			}
+			.help-footer {
+				margin-top: 30px;
+				padding-top: 18px;
+				border-top: 1px solid var(--line);
+			}
+			.help-footer p {
+				margin: 0 0 16px;
+				color: var(--muted);
+			}
+			.help-actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				gap: 12px;
+			}
+			@media (max-width: 640px) {
+				.help-topbar,
+				.help-actions {
+					flex-direction: column;
+					align-items: stretch;
+				}
+				.help-page {
+					padding: 18px 16px 14px;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<main class="page-shell">
-			<section class="app-card" aria-label="Help page">
-				<h1>Help</h1>
-				<p>Use Coupon Calculator to estimate savings before you buy.</p>
+			<section class="app-card help-page" aria-label="Help page">
+				<div class="help-topbar">
+					<div>
+						<p class="eyebrow">Support</p>
+						<h1>Help & quick guide</h1>
+					</div>
+					<a class="secondary-btn" href="/">Back to calculator</a>
+				</div>
 
-				<h2>How to calculate a discount</h2>
-				<ol>
-					<li>Enter the original price.</li>
-					<li>Choose either a percentage discount or a fixed amount discount.</li>
-					<li>Enter the discount value.</li>
-					<li>Review the final price, total savings, and discount summary.</li>
-				</ol>
+				<p class="help-subtitle">Coupon Calculator helps you estimate savings before checkout, compare multibuy deals, and review your recent results without doing the math in your head.</p>
 
-				<h2>Quick tips</h2>
-				<ul>
-					<li>Use the plus and minus buttons for small adjustments when comparing close price points.</li>
-					<li>Check that your discount amount is not greater than the original price.</li>
-					<li>Use the multibuy calculator for deals like bundle pricing, buy-one-get-one promotions, or special group offers.</li>
-					<li>Saved results can be reviewed from the history panel in the main calculator.</li>
-				</ul>
+				<div class="help-grid">
+					<article class="info-card highlight-card">
+						<span class="badge">Core tools</span>
+						<h2>What this app can do</h2>
+						<ul class="tip-list">
+							<li>Calculate a percentage or fixed-amount discount.</li>
+							<li>Compare regular price versus deal price for multibuy offers.</li>
+							<li>Store recent calculation history locally for quick review.</li>
+						</ul>
+					</article>
 
-				<p>If the result seems unrealistic, make sure the values are valid numbers and that the discount type matches the deal you are trying to model.</p>
-				<button type="button" class="secondary-btn" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href='/'; }">Back</button>
+					<article class="info-card">
+						<span class="badge">Best for</span>
+						<h2>Everyday shopping</h2>
+						<ul class="tip-list">
+							<li>Sales and clearance discounts.</li>
+							<li>Buy-one-get-one promotions.</li>
+							<li>Bundle pricing and special offer comparisons.</li>
+						</ul>
+					</article>
+				</div>
+
+				<section class="help-section" aria-labelledby="discount-heading">
+					<h2 id="discount-heading">1. Calculate a standard discount</h2>
+					<ol class="steps">
+						<li><span class="step-number">1</span> Enter the original price, such as $79.99.</li>
+						<li><span class="step-number">2</span> Pick either a percentage discount or a fixed discount.</li>
+						<li><span class="step-number">3</span> Add the discount value and review the result summary.</li>
+						<li><span class="step-number">4</span> Check the final price, total savings, and percentage saved.</li>
+					</ol>
+					<div class="example-box">
+						<strong>Example</strong>
+						A $120 item with a 25% discount saves $30 and brings the final price to $90.
+					</div>
+					<div class="formula-box">Discount amount = original price × discount % / 100</div>
+				</section>
+
+				<section class="help-section" aria-labelledby="multibuy-heading">
+					<h2 id="multibuy-heading">2. Use the multibuy deal calculator</h2>
+					<p>The multibuy section helps compare a normal purchase with a bundled or promotional deal.</p>
+					<div class="help-grid">
+						<article class="info-card">
+							<span class="badge">Deal type</span>
+							<h2>Buy X get Y free</h2>
+							<p>Example: buy 2, get 1 free. The calculator estimates how many units you actually pay for and how much you save.</p>
+						</article>
+						<article class="info-card">
+							<span class="badge">Deal type</span>
+							<h2>X for Y items</h2>
+							<p>Example: 3 for 2 or 4 for 3. This is useful when a promotion pays for fewer items than the bundle contains.</p>
+						</article>
+						<article class="info-card">
+							<span class="badge">Deal type</span>
+							<h2>X for fixed price</h2>
+							<p>Example: 2 items for $5. This is useful for deals that are priced as a bundle instead of a percentage.</p>
+						</article>
+					</div>
+					<p>The app compares:</p>
+					<ul class="tip-list">
+						<li>Regular total at normal unit pricing</li>
+						<li>Deal total under the promotion</li>
+						<li>Amount saved</li>
+						<li>Effective unit price after the deal</li>
+					</ul>
+				</section>
+
+				<section class="help-section" aria-labelledby="rules-heading">
+					<h2 id="rules-heading">3. Validation rules and safety checks</h2>
+					<ul class="tip-list">
+						<li>Negative values are rejected.</li>
+						<li>Percentage discounts cannot be greater than 100%.</li>
+						<li>Fixed discounts are capped to the original price so the final total cannot go below zero.</li>
+						<li>Quantity must be at least 1 for multibuy calculations.</li>
+						<li>Bundle and deal values must be valid numbers before the app will calculate a result.</li>
+					</ul>
+				</section>
+
+				<section class="help-section" aria-labelledby="tips-heading">
+					<h2 id="tips-heading">4. Quick tips for accurate results</h2>
+					<ul class="tip-list">
+						<li>Use the plus and minus buttons to test small pricing differences quickly.</li>
+						<li>Match the discount type to the offer: percentage for sale percentages, fixed amount for dollar-off deals.</li>
+						<li>Check whether a bundle deal is being offered as “buy X get Y free,” “X for Y items,” or “X for fixed price.”</li>
+						<li>Use recent history to compare multiple deal scenarios before buying.</li>
+					</ul>
+				</section>
+
+				<section class="help-section" aria-labelledby="troubleshooting-heading">
+					<h2 id="troubleshooting-heading">5. Troubleshooting</h2>
+					<p>If a result looks unrealistic, double-check the following:</p>
+					<ul class="tip-list">
+						<li>The price and discount fields are valid numbers.</li>
+						<li>The correct discount type is selected.</li>
+						<li>The deal mix matches the kind of offer you are modeling.</li>
+						<li>The bundle quantities and price are realistic for the promotion.</li>
+					</ul>
+				</section>
+
+				<div class="help-footer">
+					<p>For simple pricing checks, start with price + discount. For promotion-heavy purchases, switch to the multibuy calculator and compare the regular total to the deal total.</p>
+					<div class="help-actions">
+						<a class="secondary-btn" href="/">Return to calculator</a>
+						<button type="button" class="primary-btn" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href='/'; }">Back</button>
+					</div>
+				</div>
 			</section>
 		</main>
 	</body>
