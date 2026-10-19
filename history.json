@@ -1,3 +1,13 @@
 {
-  "history": []
+  "history": [
+    {
+      "timestamp": "2026-10-17T10:20:27.665636+00:00",
+      "discount_type": "percent",
+      "original_price": "100.00",
+      "discount_value": "10.00",
+      "discount_amount": "10.00",
+      "final_price": "90.00",
+      "equation": "$100.00 - 10.00% ($10.00) = $90.00"
+    }
+  ]
 }

@@ -48,6 +48,25 @@ def load_history_entries():
     return []
 
 
+def write_history_entries(entries):
+    if not isinstance(entries, list):
+        entries = []
+
+    payload = {"history": entries[-100:]}
+    temp_path = HISTORY_PATH.with_suffix(".tmp")
+    temp_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    temp_path.replace(HISTORY_PATH)
+
+
+def append_history_entry(entry):
+    entries = load_history_entries()
+    if not isinstance(entries, list):
+        entries = []
+
+    entries.append(entry)
+    write_history_entries(entries)
+
+
 def delete_history_entry(timestamp):
     entries = load_history_entries()
     if not isinstance(entries, list):
@@ -57,10 +76,7 @@ def delete_history_entry(timestamp):
         entry for entry in entries
         if str(entry.get("timestamp")) != str(timestamp)
     ]
-    HISTORY_PATH.write_text(
-        json.dumps({"history": filtered_entries}, indent=2),
-        encoding="utf-8",
-    )
+    write_history_entries(filtered_entries)
     return filtered_entries
 
 
@@ -90,12 +106,7 @@ def save_history_entry(form, result):
         "equation": build_equation(form, result),
     }
 
-    entries = load_history_entries()
-    entries.append(entry)
-    entries = entries[-100:]
-
-    payload = {"history": entries}
-    HISTORY_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    append_history_entry(entry)
 
 
 def build_multibuy_equation(form, result):
@@ -135,12 +146,17 @@ def save_multibuy_history_entry(form, result):
         "equation": build_multibuy_equation(form, result),
     }
 
-    entries = load_history_entries()
-    entries.append(entry)
-    entries = entries[-100:]
+    append_history_entry(entry)
 
-    payload = {"history": entries}
-    HISTORY_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+def save_basic_calculator_history_entry(equation):
+    entry = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "calculator": "basic",
+        "equation": str(equation),
+    }
+
+    append_history_entry(entry)
 
 
 def calculate_discount(form):
@@ -430,6 +446,22 @@ def delete_history():
         return jsonify({"ok": False, "error": "Could not delete history item."}), 500
 
     return jsonify({"ok": True, "history": list(reversed(remaining))})
+
+
+@app.route("/history/log", methods=["POST"])
+def log_history_entry():
+    payload = request.get_json(silent=True) or {}
+    equation = payload.get("equation")
+
+    if equation is None or str(equation).strip() == "":
+        return jsonify({"ok": False, "error": "Missing equation."}), 400
+
+    try:
+        save_basic_calculator_history_entry(str(equation).strip())
+    except OSError:
+        return jsonify({"ok": False, "error": "Could not save history item."}), 500
+
+    return jsonify({"ok": True})
 
 @app.route("/pages/help")
 def help_page():

@@ -1,6 +1,17 @@
 from decimal import Decimal
 
-from app import calculate_multibuy
+from app import app, calculate_multibuy
+
+
+def test_index_has_compact_basic_calculator_widget():
+    client = app.test_client()
+    response = client.get("/")
+
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'basic calculator' in html.lower()
+    assert 'normal-calculator-modal' in html
+    assert 'normal-calculator-history' in html
 
 
 def test_buy_x_get_y_free_deal():

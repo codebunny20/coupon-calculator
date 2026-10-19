@@ -36,6 +36,9 @@
 
           <!-- Header actions -->
           <div class="header-actions">
+            <button type="button" id="basic-calculator-button" class="settings-button help-button" aria-label="Open basic calculator" aria-haspopup="dialog" aria-controls="normal-calculator-modal" aria-expanded="false">
+              <span>basic calculator</span>
+            </button>
             <button type="button" id="settings-button" class="settings-button" aria-label="Open settings" aria-haspopup="dialog" aria-controls="settings-modal" aria-expanded="false">
               <svg class="settings-button-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 8.5A3.5 3.5 0 1 1 12 15.5A3.5 3.5 0 0 1 12 8.5Z" fill="currentColor" opacity="0.9"></path>
@@ -96,6 +99,17 @@
             <button type="button" class="quick-btn" data-step="1">+1</button>
             <button type="button" class="quick-btn" data-step="5">+5</button>
             <button type="button" class="quick-btn" data-step="10">+10</button>
+          </div>
+
+          <div class="summary" aria-live="polite">
+            <div class="summary-row">
+              <span>Money off</span>
+              <strong id="discount-amount">$0.00</strong>
+            </div>
+            <div class="summary-row highlight">
+              <span>Final price</span>
+              <strong id="final-price">$0.00</strong>
+            </div>
           </div>
           
           <p id="calc-error" class="message error" {% if not error %}hidden{% endif %}>{{ error if error else '' }}</p>
@@ -242,6 +256,67 @@
         </div>
       </footer>
     </main>
+
+    <!-- Help modal -->
+    <div id="help-modal" class="settings-modal" hidden>
+      <div class="settings-backdrop" data-close-help="true"></div>
+      <section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <header class="settings-header">
+          <h2 id="help-title">How it works</h2>
+          <button type="button" class="close-settings" id="close-help" aria-label="Close help">x</button>
+        </header>
+        <div class="settings-option settings-option-block">
+          <p>Enter an original price and either a percentage or fixed discount. The calculator updates instantly and keeps a running total for the money saved and the final price.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Compact standard calculator modal -->
+    <div id="normal-calculator-modal" class="settings-modal normal-calculator-modal" hidden>
+      <div class="settings-backdrop" data-close-normal-calculator="true"></div>
+      <section class="settings-panel normal-calculator-panel" role="dialog" aria-modal="true" aria-labelledby="normal-calculator-title">
+        <header class="settings-header calculator-header">
+          <h2 id="normal-calculator-title">Calculator</h2>
+          <button type="button" class="close-settings" id="close-normal-calculator" aria-label="Close calculator">x</button>
+        </header>
+
+        <div class="normal-calculator-shell" aria-label="Standard calculator">
+          <div id="normal-calculator-display" class="normal-calculator-display" aria-live="polite">0</div>
+          <div class="normal-calculator-grid">
+            <button type="button" class="calc-btn calc-btn-secondary" data-calc-key="clear">C</button>
+            <button type="button" class="calc-btn calc-btn-secondary" data-calc-key="backspace">⌫</button>
+            <button type="button" class="calc-btn calc-btn-operator" data-calc-key="/">÷</button>
+            <button type="button" class="calc-btn calc-btn-operator" data-calc-key="*">×</button>
+
+            <button type="button" class="calc-btn" data-calc-key="7">7</button>
+            <button type="button" class="calc-btn" data-calc-key="8">8</button>
+            <button type="button" class="calc-btn" data-calc-key="9">9</button>
+            <button type="button" class="calc-btn calc-btn-operator" data-calc-key="-">−</button>
+
+            <button type="button" class="calc-btn" data-calc-key="4">4</button>
+            <button type="button" class="calc-btn" data-calc-key="5">5</button>
+            <button type="button" class="calc-btn" data-calc-key="6">6</button>
+            <button type="button" class="calc-btn calc-btn-operator" data-calc-key="+">+</button>
+
+            <button type="button" class="calc-btn" data-calc-key="1">1</button>
+            <button type="button" class="calc-btn" data-calc-key="2">2</button>
+            <button type="button" class="calc-btn" data-calc-key="3">3</button>
+            <button type="button" class="calc-btn calc-btn-equals" data-calc-key="=">=</button>
+
+            <button type="button" class="calc-btn calc-btn-zero" data-calc-key="0">0</button>
+            <button type="button" class="calc-btn" data-calc-key=".">.</button>
+          </div>
+
+          <div class="normal-calculator-history" id="normal-calculator-history">
+            <div class="normal-calculator-history-header">
+              <strong>History</strong>
+              <button type="button" id="normal-calculator-refresh-history" class="secondary-btn mini-btn">Refresh</button>
+            </div>
+            <ul id="normal-calculator-history-list" class="normal-calculator-history-list"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
 
     <!-- Settings modal for adjusting application preferences -->
     <div id="settings-modal" class="settings-modal" hidden>

@@ -1,7 +1,10 @@
 const calculatorForm = document.querySelector('.calculator-form');
-const settingsButton = document.getElementById('settings-button') || document.getElementById('settings');
+const settingsButton = document.getElementById('settings-button');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettingsButton = document.getElementById('close-settings');
+const basicCalculatorButton = document.getElementById('basic-calculator-button');
+const normalCalculatorModal = document.getElementById('normal-calculator-modal');
+const closeNormalCalculatorButton = document.getElementById('close-normal-calculator');
 const helpButton = document.getElementById('help-button');
 const helpModal = document.getElementById('help-modal');
 const closeHelpButton = document.getElementById('close-help');
@@ -47,6 +50,18 @@ function closeSettingsModal() {
   if (settingsButton) settingsButton.setAttribute('aria-expanded', 'false');
 }
 
+function openNormalCalculatorModal() {
+  if (!normalCalculatorModal) return;
+  normalCalculatorModal.hidden = false;
+  if (basicCalculatorButton) basicCalculatorButton.setAttribute('aria-expanded', 'true');
+}
+
+function closeNormalCalculatorModal() {
+  if (!normalCalculatorModal) return;
+  normalCalculatorModal.hidden = true;
+  if (basicCalculatorButton) basicCalculatorButton.setAttribute('aria-expanded', 'false');
+}
+
 function openHelpModal() {
   if (!helpModal) return;
   helpModal.hidden = false;
@@ -86,6 +101,20 @@ function formatHistoryTime(value) {
     return value || 'Unknown time';
   }
   return parsed.toLocaleString();
+}
+
+async function logHistoryEquation(equation) {
+  if (!equation) return;
+
+  try {
+    await fetch('/history/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ equation }),
+    });
+  } catch (error) {
+    // Ignore history logging failures in the UI flow.
+  }
 }
 
 async function deleteHistoryEntry(timestamp) {
@@ -220,6 +249,18 @@ if (settingsButton) {
   });
 }
 
+if (basicCalculatorButton) {
+  basicCalculatorButton.addEventListener('click', () => {
+    openNormalCalculatorModal();
+  });
+}
+
+if (closeNormalCalculatorButton) {
+  closeNormalCalculatorButton.addEventListener('click', () => {
+    closeNormalCalculatorModal();
+  });
+}
+
 if (helpButton) {
   helpButton.addEventListener('click', () => {
     openHelpModal();
@@ -269,6 +310,15 @@ if (helpModal) {
   });
 }
 
+if (normalCalculatorModal) {
+  normalCalculatorModal.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target && target.closest && target.closest('[data-close-normal-calculator="true"]')) {
+      closeNormalCalculatorModal();
+    }
+  });
+}
+
 if (historyModal) {
   historyModal.addEventListener('click', (event) => {
     const target = event.target;
@@ -284,6 +334,9 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key === 'Escape' && helpModal && !helpModal.hidden) {
     closeHelpModal();
+  }
+  if (event.key === 'Escape' && normalCalculatorModal && !normalCalculatorModal.hidden) {
+    closeNormalCalculatorModal();
   }
   if (event.key === 'Escape' && historyModal && !historyModal.hidden) {
     closeHistoryModal();
@@ -479,6 +532,230 @@ function queueMultibuyPreview() {
   multibuyPreviewDebounceId = window.setTimeout(() => {
     requestMultibuyCalculation('/multibuy/preview');
   }, 150);
+}
+
+const normalCalculatorDisplay = document.getElementById('normal-calculator-display');
+const normalCalculatorButtons = document.querySelectorAll('[data-calc-key]');
+const normalCalculatorHistoryList = document.getElementById('normal-calculator-history-list');
+const normalCalculatorRefreshHistoryButton = document.getElementById('normal-calculator-refresh-history');
+const normalCalculatorState = {
+  display: '0',
+  storedValue: null,
+  operator: null,
+  waitingForNewValue: false,
+};
+
+function updateNormalCalculatorDisplay() {
+  if (!normalCalculatorDisplay) return;
+  normalCalculatorDisplay.textContent = normalCalculatorState.display;
+}
+
+function clearNormalCalculatorState() {
+  normalCalculatorState.display = '0';
+  normalCalculatorState.storedValue = null;
+  normalCalculatorState.operator = null;
+  normalCalculatorState.waitingForNewValue = false;
+  updateNormalCalculatorDisplay();
+}
+
+function formatNormalCalculatorValue(value) {
+  if (!Number.isFinite(value)) return 'Error';
+  const rounded = Number(value.toFixed(10));
+  return String(rounded);
+}
+
+function performNormalCalculatorOperation(firstValue, secondValue, operator) {
+  if (operator === '+') return firstValue + secondValue;
+  if (operator === '-') return firstValue - secondValue;
+  if (operator === '*') return firstValue * secondValue;
+  if (operator === '/') {
+    if (secondValue === 0) return Number.NaN;
+    return firstValue / secondValue;
+  }
+  return secondValue;
+}
+
+function handleNormalCalculatorButtonClick(value) {
+  if (!normalCalculatorDisplay) return;
+
+  if (value === 'clear') {
+    clearNormalCalculatorState();
+    return;
+  }
+
+  if (value === 'backspace') {
+    if (normalCalculatorState.waitingForNewValue) {
+      normalCalculatorState.waitingForNewValue = false;
+      normalCalculatorState.display = '0';
+      updateNormalCalculatorDisplay();
+      return;
+    }
+
+    if (normalCalculatorState.display.length <= 1 || normalCalculatorState.display === '0') {
+      normalCalculatorState.display = '0';
+    } else {
+      normalCalculatorState.display = normalCalculatorState.display.slice(0, -1);
+    }
+    updateNormalCalculatorDisplay();
+    return;
+  }
+
+  if (value === '.') {
+    if (normalCalculatorState.waitingForNewValue) {
+      normalCalculatorState.display = '0.';
+      normalCalculatorState.waitingForNewValue = false;
+      updateNormalCalculatorDisplay();
+      return;
+    }
+
+    if (!normalCalculatorState.display.includes('.')) {
+      normalCalculatorState.display += '.';
+    }
+    updateNormalCalculatorDisplay();
+    return;
+  }
+
+  if (['+', '-', '*', '/'].includes(value)) {
+    const inputValue = Number(normalCalculatorState.display);
+
+    if (normalCalculatorState.operator && normalCalculatorState.waitingForNewValue) {
+      normalCalculatorState.operator = value;
+      return;
+    }
+
+    if (normalCalculatorState.storedValue === null) {
+      normalCalculatorState.storedValue = inputValue;
+    } else if (normalCalculatorState.operator) {
+      const result = performNormalCalculatorOperation(
+        normalCalculatorState.storedValue,
+        inputValue,
+        normalCalculatorState.operator,
+      );
+
+      if (!Number.isFinite(result)) {
+        clearNormalCalculatorState();
+        normalCalculatorState.display = 'Error';
+        updateNormalCalculatorDisplay();
+        return;
+      }
+
+      normalCalculatorState.display = formatNormalCalculatorValue(result);
+      normalCalculatorState.storedValue = Number(normalCalculatorState.display);
+    }
+
+    normalCalculatorState.waitingForNewValue = true;
+    normalCalculatorState.operator = value;
+    updateNormalCalculatorDisplay();
+    return;
+  }
+
+  if (value === '=') {
+    if (normalCalculatorState.operator === null || normalCalculatorState.storedValue === null) {
+      return;
+    }
+
+    const firstValue = normalCalculatorState.storedValue;
+    const secondValue = Number(normalCalculatorState.display);
+    const operator = normalCalculatorState.operator;
+
+    const result = performNormalCalculatorOperation(
+      firstValue,
+      secondValue,
+      operator,
+    );
+
+    if (!Number.isFinite(result)) {
+      clearNormalCalculatorState();
+      normalCalculatorState.display = 'Error';
+      updateNormalCalculatorDisplay();
+      return;
+    }
+
+    normalCalculatorState.display = formatNormalCalculatorValue(result);
+    normalCalculatorState.storedValue = Number(normalCalculatorState.display);
+    normalCalculatorState.operator = null;
+    normalCalculatorState.waitingForNewValue = true;
+    updateNormalCalculatorDisplay();
+    logHistoryEquation(`${formatNormalCalculatorValue(firstValue)} ${operator} ${formatNormalCalculatorValue(secondValue)} = ${normalCalculatorState.display}`);
+    loadNormalCalculatorHistory();
+    return;
+  }
+
+  if (normalCalculatorState.waitingForNewValue) {
+    normalCalculatorState.display = value;
+    normalCalculatorState.waitingForNewValue = false;
+  } else {
+    normalCalculatorState.display = normalCalculatorState.display === '0' ? value : normalCalculatorState.display + value;
+  }
+
+  updateNormalCalculatorDisplay();
+}
+
+function renderNormalCalculatorHistory(entries) {
+  if (!normalCalculatorHistoryList) return;
+  normalCalculatorHistoryList.innerHTML = '';
+
+  if (!entries.length) {
+    const emptyItem = document.createElement('li');
+    emptyItem.className = 'history-empty';
+    emptyItem.textContent = 'No saved calculations yet.';
+    normalCalculatorHistoryList.appendChild(emptyItem);
+    return;
+  }
+
+  entries.forEach((entry) => {
+    const item = document.createElement('li');
+    item.className = 'history-item calculator-history-item';
+
+    const itemContent = document.createElement('div');
+    itemContent.className = 'history-item-content';
+
+    const equation = document.createElement('p');
+    equation.className = 'history-equation';
+    equation.textContent = entry.equation || 'Equation unavailable';
+
+    const meta = document.createElement('p');
+    meta.className = 'history-meta';
+    meta.textContent = formatHistoryTime(entry.timestamp);
+
+    itemContent.appendChild(equation);
+    itemContent.appendChild(meta);
+    item.appendChild(itemContent);
+    normalCalculatorHistoryList.appendChild(item);
+  });
+}
+
+async function loadNormalCalculatorHistory() {
+  try {
+    const response = await fetch('/history');
+    const data = await response.json();
+    if (!data.ok || !Array.isArray(data.history)) {
+      renderNormalCalculatorHistory([]);
+      return;
+    }
+    renderNormalCalculatorHistory(data.history);
+  } catch (error) {
+    renderNormalCalculatorHistory([]);
+  }
+}
+
+if (normalCalculatorRefreshHistoryButton) {
+  normalCalculatorRefreshHistoryButton.addEventListener('click', () => {
+    loadNormalCalculatorHistory();
+  });
+}
+
+if (normalCalculatorButtons.length) {
+  normalCalculatorButtons.forEach((button) => {
+    button.addEventListener('click', () => handleNormalCalculatorButtonClick(button.dataset.calcKey));
+  });
+}
+
+if (basicCalculatorButton) {
+  basicCalculatorButton.addEventListener('click', () => {
+    openNormalCalculatorModal();
+    loadNormalCalculatorHistory();
+  });
 }
 
 if (calculatorForm) {
