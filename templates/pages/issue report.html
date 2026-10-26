@@ -25,7 +25,7 @@
     <section class="app-card">
       <h1>Report an Issue</h1>
 
-      <p>Fill in the details below. Your email app will open with a formatted report for you to review and send.</p>
+      <p>Fill in the details below to open a Gmail draft addressed to bunnycontact.me@gmail.com. Review and send it there; reports are not submitted automatically.</p>
 
       <form class="issue-report-form" id="issue-report-form">
         <label class="issue-report-field" for="issue-title">
@@ -38,8 +38,11 @@
           <textarea class="issue-report-textarea" id="issue-description" name="issue-description" required></textarea>
         </label>
 
-        <button class="primary-btn" type="submit">Prepare email</button>
-        <p class="issue-report-status" id="issue-report-status" role="status" aria-live="polite"></p>
+        <button class="primary-btn" type="submit">Open Gmail draft</button>
+        <p class="issue-report-status" id="issue-report-status" role="status" aria-live="polite">
+          <span id="issue-report-status-message"></span>
+          <a id="issue-report-fallback" target="_blank" rel="noopener noreferrer" hidden>Open the Gmail draft</a>
+        </p>
       </form>
     </section>
   </main>
@@ -48,7 +51,8 @@
     (function () {
       const reportEmail = 'bunnycontact.me@gmail.com';
       const form = document.getElementById('issue-report-form');
-      const status = document.getElementById('issue-report-status');
+      const statusMessage = document.getElementById('issue-report-status-message');
+      const fallback = document.getElementById('issue-report-fallback');
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -65,9 +69,12 @@
           issueDescription
         ].join('\n');
 
-        status.textContent = 'Opening your email app. Review the report and send it there.';
-        window.location.href = `mailto:${reportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      });
+        const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(reportEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        statusMessage.textContent = 'If Gmail did not open, use this link: ';
+        fallback.href = gmailComposeUrl;
+        fallback.hidden = false;
+        window.open(gmailComposeUrl, '_blank', 'noopener,noreferrer');
+        });
     })();
   </script>
 </body>
