@@ -429,6 +429,13 @@ def history():
     if not isinstance(entries, list):
         entries = []
 
+    calculator = request.args.get("calculator")
+    if calculator:
+        entries = [
+            entry for entry in entries
+            if isinstance(entry, dict) and entry.get("calculator") == calculator
+        ]
+
     return jsonify({"ok": True, "history": list(reversed(entries))})
 
 
@@ -481,8 +488,11 @@ def privacy_policy_page():
 @app.route("/pages/donate")
 def donate_page():
     return render_template("pages/donate.html")
+
+@app.route("/pages/issue-report")
+def issue_report_page():
+    return render_template("pages/issue report.html")
     
 # Run the application
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
-

@@ -1,13 +1,49 @@
 {
   "history": [
     {
-      "timestamp": "2026-10-17T10:20:27.665636+00:00",
-      "discount_type": "percent",
-      "original_price": "100.00",
-      "discount_value": "10.00",
-      "discount_amount": "10.00",
-      "final_price": "90.00",
-      "equation": "$100.00 - 10.00% ($10.00) = $90.00"
+      "timestamp": "2026-10-23T06:58:52.959277+00:00",
+      "calculator": "basic",
+      "equation": "-6 + 1 = -5"
+    },
+    {
+      "timestamp": "2026-10-23T06:59:05.851239+00:00",
+      "calculator": "basic",
+      "equation": "11 - 5 = 6"
+    },
+    {
+      "timestamp": "2026-10-23T06:59:52.532046+00:00",
+      "calculator": "basic",
+      "equation": "6 - 6 = 0"
+    },
+    {
+      "timestamp": "2026-10-23T07:00:06.602065+00:00",
+      "calculator": "basic",
+      "equation": "0 + 1 = 1"
+    },
+    {
+      "timestamp": "2026-10-23T07:00:31.667159+00:00",
+      "calculator": "basic",
+      "equation": "4 + 1 = 5"
+    },
+    {
+      "timestamp": "2026-10-23T07:01:07.794612+00:00",
+      "calculator": "basic",
+      "equation": "5 * 3 = 15"
+    },
+    {
+      "timestamp": "2026-10-23T07:01:37.668259+00:00",
+      "calculator": "basic",
+      "equation": "19 * 3 = 57"
+    },
+    {
+      "timestamp": "2026-10-23T07:03:08.585703+00:00",
+      "calculator": "basic",
+      "equation": "19 * 3 = 57"
+    },
+    {
+      "timestamp": "2026-10-23T07:03:38.090381+00:00",
+      "calculator": "basic",
+      "equation": "57 * 3 = 171"
     }
   ]
 }

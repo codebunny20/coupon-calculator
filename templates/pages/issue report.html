@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue Report</title>
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('coupon-calculator:theme');
+        const theme = savedTheme === 'light' || savedTheme === 'dark'
+          ? savedTheme
+          : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <main class="page-shell">
+    <section class="app-card">
+      <h1>Report an Issue</h1>
+
+      <p>Fill in the details below. Your email app will open with a formatted report for you to review and send.</p>
+
+      <form class="issue-report-form" id="issue-report-form">
+        <label class="issue-report-field" for="issue-title">
+          Short summary
+          <input class="issue-report-input" id="issue-title" name="issue-title" type="text" required>
+        </label>
+
+        <label class="issue-report-field" for="issue-description">
+          Describe the issue
+          <textarea class="issue-report-textarea" id="issue-description" name="issue-description" required></textarea>
+        </label>
+
+        <button class="primary-btn" type="submit">Prepare email</button>
+        <p class="issue-report-status" id="issue-report-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const reportEmail = 'bunnycontact.me@gmail.com';
+      const form = document.getElementById('issue-report-form');
+      const status = document.getElementById('issue-report-status');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const issueTitle = document.getElementById('issue-title').value.trim();
+        const issueDescription = document.getElementById('issue-description').value.trim();
+        const subject = `[Coupon Calculator] Issue report: ${issueTitle}`;
+        const body = [
+          'Issue report - Coupon Calculator',
+          '',
+          `Summary: ${issueTitle}`,
+          '',
+          'Description:',
+          issueDescription
+        ].join('\n');
+
+        status.textContent = 'Opening your email app. Review the report and send it there.';
+        window.location.href = `mailto:${reportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      });
+    })();
+  </script>
+</body>
+</html>

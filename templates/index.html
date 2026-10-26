@@ -252,7 +252,10 @@
           <span class="tk-footer-separator" aria-hidden="true">|</span>
           <a id="footer-link-donate" class="tk-footer-link" href="/pages/donate">Donate</a>
           <span class="tk-footer-separator" aria-hidden="true">|</span>
+          <a id="footer-link-contact" class="tk-footer-link" href="/pages/issue-report">Issue Report still in progress</a>
+          <span class="tk-footer-separator" aria-hidden="true">|</span>
           <span class="tk-footer-copy">More coming soon...</span>
+          <span class="tk-footer-separator" aria-hidden="true">|</span>
         </div>
       </footer>
     </main>
@@ -281,7 +284,11 @@
         </header>
 
         <div class="normal-calculator-shell" aria-label="Standard calculator">
-          <div id="normal-calculator-display" class="normal-calculator-display" aria-live="polite">0</div>
+          <ul id="normal-calculator-history-list" class="normal-calculator-history-list" aria-label="Recent calculations"></ul>
+          <div class="normal-calculator-screen">
+            <div id="normal-calculator-expression" class="normal-calculator-expression" aria-hidden="true"></div>
+            <div id="normal-calculator-display" class="normal-calculator-display" role="status" aria-live="polite" aria-atomic="true">0</div>
+          </div>
           <div class="normal-calculator-grid">
             <button type="button" class="calc-btn calc-btn-secondary" data-calc-key="clear">C</button>
             <button type="button" class="calc-btn calc-btn-secondary" data-calc-key="backspace">⌫</button>
@@ -305,14 +312,6 @@
 
             <button type="button" class="calc-btn calc-btn-zero" data-calc-key="0">0</button>
             <button type="button" class="calc-btn" data-calc-key=".">.</button>
-          </div>
-
-          <div class="normal-calculator-history" id="normal-calculator-history">
-            <div class="normal-calculator-history-header">
-              <strong>History</strong>
-              <button type="button" id="normal-calculator-refresh-history" class="secondary-btn mini-btn">Refresh</button>
-            </div>
-            <ul id="normal-calculator-history-list" class="normal-calculator-history-list"></ul>
           </div>
         </div>
       </section>

@@ -1,93 +1,114 @@
 # Coupon Calculator
 
-A lightweight Flask app for fast, reliable checkout math. It helps shoppers and cashiers quickly estimate discount savings, compare final prices, and evaluate bundle-style deals without relying on error-prone mental math.
+A lightweight Flask app for calculating discounts and comparing multibuy deals. It provides live price previews, a standalone basic calculator, and saved calculation history in a simple, mobile-friendly interface.
 
 Live app: [Open Coupon Calculator](https://coupon-calculator.up.railway.app)
 
-## Overview
-
-Coupon Calculator is designed for real-world shopping scenarios where speed and accuracy matter. Instead of manually calculating discounts in the middle of a busy checkout, users can enter price information and get clear, validated results instantly.
-
-The app supports both standard discount calculations and multibuy savings scenarios, making it useful for everyday retail decisions as well as more complex promotional offers.
-
 ## Features
 
-- Percentage and fixed-amount discount calculations
-- Automatic validation for invalid or negative inputs
-- Protection against unrealistic values such as discounts over 100%
-- Money-safe calculations using Python’s Decimal type
-- Rounded totals to two decimal places for currency accuracy
-- Multibuy deal support for:
-  - buy X get Y free
-  - X for Y items
-  - bundle pricing
-- Recent calculation history with delete support
-- Simple, mobile-friendly UI for fast use
+### Discount calculator
 
-## How it works
+- Calculate percentage-off and fixed-amount discounts.
+- See the amount saved and final price update as you enter values.
+- Adjust the discount quickly with the `-10`, `-5`, `-1`, `+1`, `+5`, and `+10` buttons.
+- Prevent negative prices and discounts; percentage discounts must be between 0% and 100%.
+- Fixed discounts are capped at the original price, so the final price cannot go below zero.
 
-The app takes an original price and a discount value, validates the input, and then calculates:
+### Multibuy deal calculator
 
-- discount amount
-- final price
-- savings percentage
-- total savings
+Compare the regular total with the promotional total, see your savings, and calculate the effective price per item for:
 
-For multibuy deals, it can also estimate:
+- **Buy X, get Y free** (for example, buy 2, get 1 free).
+- **X for Y items** (for example, 3 for 2).
+- **X for a fixed price** (for example, 2 for $5).
 
-- regular total
-- deal total
-- savings
-- effective unit price
+Enter a unit price and quantity; the calculator accounts for complete deal groups and any remaining items.
+
+### Basic calculator
+
+A compact calculator modal supports addition, subtraction, multiplication, division, decimals, clear, and backspace. Calculations can be saved to the shared history.
+
+### History, settings, and help
+
+- Save discount, multibuy, and basic-calculator results.
+- Review recent calculations and delete individual entries.
+- History is stored in `history.json` and limited to the latest 100 entries.
+- Switch between light and dark themes; the theme preference is saved in the browser.
+- Use the dedicated Help guide, About, Privacy Policy, and Donate pages linked from the footer.
+- Responsive interface with live previews and validation messages.
+
+## Calculation and data details
+
+- Python's `Decimal` is used for monetary calculations, with currency rounded to two decimal places using half-up rounding.
+- History is stored as JSON on the server running the app. No account or database is required.
+- The app includes API endpoints for live previews, saved calculations, and history management.
 
 ## Tech stack
 
-- Flask
-- Python
-- Decimal for precise money handling
-- HTML, CSS, and JavaScript for the front end
-- JSON-based local history storage
+- Python and Flask
+- Gunicorn for production serving
+- HTML templates, CSS, and JavaScript
+- JSON file storage for calculation history
 
 ## Project structure
 
-- `app.py` – Flask routes and calculation logic
-- `logic.js` – front-end behavior and live previews
-- `templates/` – HTML templates for the main app and supporting pages
-- `static/` – CSS and static assets
-- `history.json` – saved calculation history
+```text
+app.py                       Flask routes, validation, and calculation logic
+logic.js                     Front-end behavior, live previews, and calculator UI
+templates/
+  index.html                 Main calculator page and dialogs
+  pages/
+    help.html                User guide
+    about.html               About page
+    donate.html              Support page
+    privacy policy.html      Privacy policy
+static/
+  styles.css                 Responsive styles and themes
+history.json                 Saved calculation history
+tests/
+  test_multibuy.py           Multibuy calculation and page tests
+requirements.txt             Python runtime dependencies
+```
 
 ## Run locally
 
-1. Clone the repository
-2. Create and activate a virtual environment
-3. Install dependencies
-4. Start the app
+1. Clone the repository and open its directory.
+2. Create and activate a virtual environment.
+3. Install the app dependencies and start the Flask app:
 
-```bash
+```powershell
 python -m venv .venv
-.venv\Scripts\activate
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python app.py
 ```
 
-Then open:
+Open [http://localhost:8000](http://localhost:8000).
 
-```text
-http://localhost:8000
+## Run tests
+
+Install `pytest` if it is not already available, then run:
+
+```powershell
+python -m pytest tests/test_multibuy.py
 ```
 
 ## Deployment
 
-This project is deployed on Railway and is configured to run as a Flask web app in production.
+The app is deployed on Railway. `gunicorn` is included in `requirements.txt` for production serving; `python app.py` starts the development server locally on port 8000.
 
-## Why this project matters
+## Contributing
 
-This app was built around a practical everyday problem: doing quick, accurate pricing math under pressure. It reflects a simple but important software principle—solve a real problem with a tool that is clear, useful, and trustworthy.
+Contributions are welcome. Please open an issue or pull request with proposed improvements, bug fixes, or additional deal types.
+
+## Interface behavior
+
+- Discount and multibuy previews update automatically after a short pause while entering values.
+- Changing the multibuy deal type shows only the relevant inputs; switching between deal types updates the preview.
+- Settings, Help, History, and Basic Calculator dialogs can be closed with their close controls, by clicking the backdrop, or by pressing `Escape`.
+- The Basic Calculator supports chained arithmetic, and division by zero displays an error instead of an invalid result.
+- Calculator history can be refreshed in the Basic Calculator and individual entries can be deleted from the History dialog.
 
 ## License
 
 This project is available for personal and educational use.
-
-## Contributing
-
-Contributions are welcome. If you want to improve the calculator, add better validation, expand deal types, or improve the UI, feel free to open a pull request or suggest changes.
